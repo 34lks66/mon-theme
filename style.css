@@ -1,0 +1,21 @@
+/*
+Theme Name: Mon Thème Bus Dentaire
+Theme URI : http://localhost/wordpress/
+Author: [Lekesiz Mucahit]
+Description: Thème personnalisé pour le Bus Dentaire du Gers
+Version: 1.0
+*/
+
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.main-content {
+    flex: 1; /* Prend tout l'espace disponible */
+}
+
+
