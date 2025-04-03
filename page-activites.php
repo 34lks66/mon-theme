@@ -10,7 +10,7 @@
 
 <section class="hero">
     <div class="hero-content">
-        <h1>Qui sommmes nous ?</h1>
+        <h1>Qui sommmes-nous ?</h1>
         <p>Rendre les soins dentaires accessibles aux Gersois, même dans les zones rurales isolées</p>
     </div>
 </section>
@@ -18,17 +18,75 @@
 <section class="presentation">
     <div class="presentation-content">
         <h2 class="section-title">Notre Mission</h2>
-        <p>Face à la désertification médicale touchant près de 11 millions de personnes en France, le Bus Dentaire Gersois représente une solution mobile innovante pour lutter contre le manque de soins dentaires dans les zones rurales.</p>
-        <div class="presentation-grid">
+        <p style="text-align: center;">Le Bus Dentaire Gersois incarne une solution mobile pour offrir des soins dentaires <i style="color: #e30613;">gratuits</i> aux populations isolées.</p>
             <div class="presentation-c" style="background-color: #e3f2fd ;">
-                <h3 style="color: #1565C0;">Contexte</h3>
-                <p>Dans le Gers, avec seulement un dentiste pour 1 641 habitants, 25% des habitants renoncent aux soins faute de praticiens ou de mobilité. Notre bus dentaire apporte une solution concrète à cette problématique.</p>
+                <h4>Contexte</h4>
+                <!-- <p>Face à la désertification médicale dans le Gers, seulement un dentiste pour 1 641 habitants et 25% des habitants renoncent aux soins faute de praticiens ou de mobilité.</p> -->
+                <p>Face à la désertification médicale dans le Gers, de nombreux habitants renoncent à se faire soigner, faute de praticiens disponible à proximité ou simplement problème de mobilité.</p> 
+                <div class="box-container">
+                    <div class="box">
+                        <div class="pourcent">
+                            <svg>
+                                <circle cx="70px" cy="70px" r="70px"></circle>
+                                <circle cx="70px" cy="70px" r="70px"></circle>
+                            </svg>
+                            <span>1</span>
+                        </div>
+                        <h4>dentiste</h4>
+                        <p>pour 1 641 habitants</p>
+                    </div>
+                    <div class="box">
+                        <div class="pourcent">
+                            <svg>
+                                <circle cx="70px" cy="70px" r="70px"></circle>
+                                <circle cx="70px" cy="70px" r="70px"></circle>
+                            </svg>
+                            <span>60,9</span>
+                        </div>
+                        <h4>praticiens</h4>
+                        <p>pour 100 000 habitants</p>
+                    </div>
+                    <div class="box">
+                        <div class="pourcent">
+                            <svg>
+                                <circle cx="70px" cy="70px" r="70px"></circle>
+                                <circle cx="70px" cy="70px" r="70px"></circle>
+                            </svg>
+                            <span>50%</span>
+                        </div>
+                        <h4>des communes gersoises</h4>
+                        <p>sans cabinet dentaire</p>   
+                    </div>
+                    <div class="box">
+                        <div class="pourcent">
+                            <svg>
+                                <circle cx="70px" cy="70px" r="70px"></circle>
+                                <circle cx="70px" cy="70px" r="70px"></circle>
+                            </svg>
+                            <span>25%</span>
+                        </div>
+                        <h4>des habitants</h4>
+                        <p>renoncent aux soins</p>
+                    </div>
+                    <div class="box">
+                        <div class="pourcent">
+                            <svg>
+                                <circle cx="70px" cy="70px" r="70px"></circle>
+                                <circle cx="70px" cy="70px" r="70px"></circle>
+                            </svg>
+                            <span>8</span>
+                        </div>
+                        <h4>mois d’attente</h4>
+                        <p>pour obtenir un rendez-vous</p>
+                    </div>
+                </div>
             </div>
-            <div class="presentation-c" style="background-color: #ffebee;">
-                <h3 style="color: #e30613;">Notre Engagement</h3>
-                <p>Apporter des soins dentaires accessibles aux populations isolées, dans un esprit d'égalité territoriale. 
+            <div class="presentation-grid">
+                <div class="presentation-c" style="background-color: #ffebee;">
+                    <h4 style="color: #e30613;font-size: 20px;">Notre Engagement</h4>
+                    <p>Notre bus dentaire apporte une solution rapide pour répondre à l'urgence en promulguant des soins spécifiques aux populations isolées.</p> 
+                </div>
             </div>
-        </div>
     </div>
 </section>
 <br>
@@ -85,14 +143,14 @@
             <p>Un coordinateur, une secrétaire et la direction de la Croix-Rouge du Gers assurent la gestion quotidienne.</p>
         </div>
         <div class="team-card">
-            <div class="icon-card">
+            <div class="card-icon">
                 <i class="fa-solid fa-stethoscope" style="color: #e30613;"></i>
             </div>
             <h3>Équipe Médicale</h3>
             <p>Une équipe de dentistes superviseurs bénévoles et des étudiants en dernière année de la Faculté Dentaire de Toulouse.</p>
         </div>
         <div class="team-card">
-            <div class="team-card">
+            <div class="card-icon">
                 <i class="fa-solid fa-truck" style="color: #e30613;"></i>
             </div>
             <h3>Équipe Logistique</h3>
@@ -190,19 +248,120 @@
 
     .presentation-c {
         padding: 1.5rem; 
+        text-align: center;
         border-radius: 0.5rem;
     }
-    
-    .presentation-c h3 {
-        font-size: 1.25rem;
-        font-weight: 600; 
-        margin-bottom: 1rem;  
+
+    .presentation-c h4 {
+        color: var(--blue);
+        font-size: 20px;
     }
 
     .presentation-content p {
         font-size: 1.125rem; 
         color: #616161;
         margin-bottom: 1.5rem;
+    }
+
+    .box-container {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .box {
+        padding: 4em 3em;  
+        flex-direction: column;
+        position: relative; 
+        align-items: center;
+    }
+
+    .pourcent {
+        position: relative;
+    }
+
+    span {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 2em; 
+        font-weight: 500;
+        color: var(--blue)
+    }
+
+    svg {
+        height: 150px;
+        width: 150px;
+    }
+
+    svg circle {
+        fill: none;
+        stroke: var(--blue);
+        stroke-width: 10px;
+        transform: translate(5px, 5px);
+        stroke-linecap: round;
+        stroke-dasharray: 440;
+        stroke-dashoffset: 440;
+    }
+
+    svg circle:nth-child(1) {
+        stroke: var(--light-gray);
+        stroke-dashoffset: 0;
+    }
+
+    svg circle:nth-child(2) {
+        animation: circle 2s forwards;
+    }
+
+    .box:nth-child(1) svg circle:nth-child(2) {
+        animation: circle1 2s forwards;
+    }
+
+    .box:nth-child(2) svg circle:nth-child(2) {
+        animation: circle2 2s forwards;
+    }
+
+    .box:nth-child(3) svg circle:nth-child(2) {
+        animation: circle3 2s forwards;
+    }
+
+    .box:nth-child(4) svg circle:nth-child(2) {
+        animation: circle4 2s forwards;
+    }
+
+    .box:nth-child(5) svg circle:nth-child(2) {
+        animation: circle5 2s forwards;
+    }
+
+    @keyframes circle1 {
+        to {
+            stroke-dashoffset: 435;
+        }
+    }
+
+    @keyframes circle2 {
+        to {
+            stroke-dashoffset: 172;
+        }
+    }
+
+    @keyframes circle3 {
+        to {
+            stroke-dashoffset: 220;
+        }
+    }
+
+    @keyframes circle4 {
+        to {
+            stroke-dashoffset: 330;
+        }
+    }
+
+    @keyframes circle5 {
+        to {
+            stroke-dashoffset: 147;
+        }
     }
 
     .timeline-content {
@@ -265,7 +424,6 @@
         box-shadow: 0 8px 30px rgba(0,0,0,0.1);
         padding: 2.5rem;
         margin-bottom: 3rem;
-        border-top: 4px solid var(--red); 
     }
 
     .bus-title {
@@ -334,7 +492,6 @@
         box-shadow: 0 5px 20px rgba(0,0,0,0.05);
         text-align: center;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
-        border-top: 3px solid var(--red);
     }
 
     .team-card:hover {
@@ -347,11 +504,9 @@
         height: 70px;
         background-color: rgba(227,6,19,0.1);
         border-radius: 50%;
-        display: flex;
         align-items: center;
         margin: 0 auto 1.5rem;
         font-size: 1.8rem;
-        color: var(--red);
     }
 
     .team-card h3 {
@@ -369,7 +524,6 @@
         background-color: #E3F2FD; 
         padding: 2rem; 
         border-radius: 12px;
-        border-left: 4px solid var(--blue);
     }
 
     .operation-header {
@@ -380,9 +534,8 @@
     }
 
     .operation-header h3 {
-        font-size: 1.4rem;
+        font-size: 20px;
         color: var(--blue);  
-        margin: 0;
     }
 
     .operation-card p {

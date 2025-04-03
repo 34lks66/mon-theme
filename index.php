@@ -21,19 +21,19 @@
         <div class="container">
             <div class="services-grid">
                 <div class="service-card">
-                    <div class="service-icon" style="background-color: #e30613;">
+                    <div class="service-icon" style="background-color: #0077b6;">
                         <i class="fas fa-tooth"></i>
                     </div>
                     <h3>Consultations</h3>
                 </div>
                 <div class="service-card">
-                    <div class="service-icon" style="background-color: #0077b6;">
+                    <div class="service-icon" style="background-color: #e30613;">
                         <i class="fas fa-ambulance"></i>
                     </div>
                     <h3>Urgences</h3>
                 </div>
                 <div class="service-card">
-                    <div class="service-icon" style="background-color: #e30613;">
+                    <div class="service-icon" style="background-color: #0077b6;">
                         <i class="fas fa-teeth-open"></i>
                     </div>
                     <h3>Soins des dents et des racines</h3>
@@ -53,7 +53,7 @@
     <section class="image">
         <div class="container">
             <h2 class="section-title">Notre Bus Dentaire</h2>
-            <center><p>Notre bus dentaire dispose de tout l'équipement nécessaire pour fournir des soins dentaires, allant du simple détartrage à l'extraction des dents. <br>Il est équipé d'un fauteuil dentaire, d'un système de radiologie, des consommables dentaires et de divers instruments spécialisés.</p></center><br>
+            <center><p>Le bus dentaire dispose de tout l'équipement nécessaire pour fournir des soins dentaires, allant du simple détartrage à l'extraction des dents. <br>Il est équipé d'un fauteuil dentaire, d'un système de radiologie, des consommables dentaires et de divers instruments spécialisés.</p></center><br>
             <div class="image-grid">
                 <img src="<?php echo get_template_directory_uri(); ?>/assets/images/bus2.jpg" alt="Bus dentaire">
                 <img src="<?php echo get_template_directory_uri(); ?>/assets/images/bus1.jpg" alt="Bus dentaire">
