@@ -10,8 +10,8 @@
 
 <section class="hero">
     <div class="hero-content">
-        <h1>Qui sommmes-nous ?</h1>
-        <p>Rendre les soins dentaires accessibles aux Gersois, même dans les zones rurales isolées</p>
+        <h1 class="hero-title">Qui sommmes-nous ?</h1>
+        <p class="hero-subtitle">Rendre les soins dentaires accessibles aux Gersois, même dans les zones rurales isolées</p>
     </div>
 </section>
 
@@ -115,72 +115,113 @@
 </section>
 <br>
 <section class="team-section">
-    <div class="container">
-    <h2 class="section-title">Fonctionnement & Équipe</h2>
-    <div class="bus-card">
-        <h3 class="bus-title">Équipement du bus - Matériel médical</h3>
-        <div class="bus-grid">
-            <div class="bus-features">
-                <ul class="feature-list">
-                    <li>Fauteuil dentaire</li>
-                    <li>Système de radiologie</li>
-                    <li>Instruments spécialisés</li>
-                    <li>Consommables dentaires</li>
-                </ul>
-            </div>
-            <div class="bus-image">
-                --- IMAGE --- 
+    <div class="team-content">
+        <div class="container">
+            <h2 class="section-title">Fonctionnement & Équipe</h2>
+            <div class="bus-card">
+                <h3 class="bus-title">Équipement du bus - Matériel médical</h3>
+                <div class="bus-grid">
+                    <div class="bus-features">
+                        <ul class="feature-list">
+                            <li>Fauteuil dentaire</li>
+                            <li>Système de radiologie</li>
+                            <li>Instruments spécialisés</li>
+                            <li>Consommables dentaires</li>
+                        </ul>
+                    </div>
+                    <div class="bus-image">
+                        --- IMAGE --- 
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    </div>
-    <div class="team-cards">
-        <div class="team-card">
-            <div class="card-icon">
-                <i class="fa-solid fa-user-gear" style="color: #e30613;"></i>
+        <div class="team-cards">
+            <div class="team-card">
+                <div class="card-icon">
+                    <i class="fa-solid fa-user-gear" style="color: #e30613;"></i>
+                </div>
+                <h3>Équipe Administrative</h3>
+                <p>Un coordinateur, une secrétaire et la direction de la Croix-Rouge du Gers assurent la gestion quotidienne.</p>
             </div>
-            <h3>Équipe Administrative</h3>
-            <p>Un coordinateur, une secrétaire et la direction de la Croix-Rouge du Gers assurent la gestion quotidienne.</p>
-        </div>
-        <div class="team-card">
-            <div class="card-icon">
-                <i class="fa-solid fa-stethoscope" style="color: #e30613;"></i>
+            <div class="team-card">
+                <div class="card-icon">
+                    <i class="fa-solid fa-stethoscope" style="color: #e30613;"></i>
+                </div>
+                <h3>Équipe Médicale</h3>
+                <p>Une équipe de dentistes superviseurs bénévoles et des étudiants en dernière année de la Faculté Dentaire de Toulouse.</p>
             </div>
-            <h3>Équipe Médicale</h3>
-            <p>Une équipe de dentistes superviseurs bénévoles et des étudiants en dernière année de la Faculté Dentaire de Toulouse.</p>
-        </div>
-        <div class="team-card">
-            <div class="card-icon">
-                <i class="fa-solid fa-truck" style="color: #e30613;"></i>
+            <div class="team-card">
+                <div class="card-icon">
+                    <i class="fa-solid fa-truck" style="color: #e30613;"></i>
+                </div>
+                <h3>Équipe Logistique</h3>
+                <p>Personnel de la Croix-Rouge assurant le bon fonctionnement et la maintenance du bus.</p>
             </div>
-            <h3>Équipe Logistique</h3>
-            <p>Personnel de la Croix-Rouge assurant le bon fonctionnement et la maintenance du bus.</p>
         </div>
-    </div>
-    <div class="operation-card">
-        <div class="operation-header">
-            <i class="fa-regular fa-calendar" style="color: #e30613;"></i>
-            <h3>Mode de fonctionnement</h3>
+        <div class="operation-card">
+            <div class="operation-header">
+                <i class="fa-regular fa-calendar" style="color: #e30613;"></i>
+                <h3>Mode de fonctionnement</h3>
+            </div>
+            <p>Le bus se déplace 2 à 3 fois par semaine principalement les lundis, mardis et mercredis dans 10 communes rurales isolées du Gers</p>
+            <a href="#" class="btn btn-primary">voir le planning</a>
         </div>
-        <p>Le bus se déplace 2 à 3 fois par semaine principalement les lundis, mardis et mercredis dans 10 communes rurales isolées du Gers</p>
-        <a href="#" class="btn btn-primary">voir le planning</a>
     </div>
 </section>
 <br>
-<section class="care">
-    <h2 class="section-title">Nos Soins</h2>   
+<section class="soins">
+    <div class="soins-content">
+        <h2 class="section-title">Que propose le Bus Dentaire ?</h2>
+        <p class="soins-intro">Des soins dentaires gratuits et accessibles à tous</p>
+        <p class="soins-intro">Nous offrons une variété de soins, allant du simple détartrage à l'extraction des dents</p>
+        <div class="soins-container">
+            <div class="soins-card-row">
+                <div class="soins-card">
+                    <h4><i class="fas fa-tooth"></i> Soins Dentaires Essentiels</h4>
+                    <ul>
+                        <li>Détartrage complet</li>
+                        <li>Hygiène bucco-dentaire</li>
+                        <li>Traitement des caries (Plombage et composites)</li>
+                    </ul>
+                </div>
+                <div class="soins-card">
+                    <h4><i class="fas fa-syringe"></i> Autres interventions</h4>
+                    <ul>
+                        <li>Dévitalisation dentaire</li>
+                        <li>Extraction des dents</li>
+                        <li>Couronnes</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="soins-card-row">
+                <div class="soins-card">
+                    <h4><i class="fas fa-shield-alt"></i> Prévention et Éducation</h4>
+                    <ul>
+                        <li>Conseils en hygiène bucco-dentaire.</li>
+                        <li>Sensibilisation à l’importance du brossage et des soins réguliers.</li>
+                        <li>Sessions éducatives dans les écoles pour apprendre aux plus jeunes à protéger leurs dents.</li>
+                    </ul>
+                </div>
+                <div class="soins-card">
+                    <h4><i class="fas fa-heart"></i> Soins Gratuits et Accessibles à Tous !</h4>
+                    <ul>
+                        <li>Tous nos soins sont entièrement gratuits, sans distinction ni condition.</li>
+                        <li>Une équipe bienveillante prête à vous accueillir et répondre à vos besoins.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 <br>
 <section class="statistic">
     <h2 class="section-title">Statistiques</h2>
 </section>
 
-
 </div>
 
 <?php include_once('footer.php'); ?>
 <?php get_footer(); ?>
-
 
 <style>
       :root {
@@ -191,10 +232,9 @@
         --light-gray: #f8f9fa;
     }
 
-
     .section-title {
         text-align: center;
-        margin-bottom: 40px;
+        margin-bottom: 25px;
         font-size: 2rem;
         color: var(--red);
         position: relative;
@@ -209,29 +249,81 @@
         margin: 15px auto;
     }
 
+     /* 
+    ############################################# 
+                hero-section  
+    #############################################
+    */
+
     .hero {
-        height: 50vh;
+        position: relative;
+        height: 80vh;
         background-size: 100% auto !important;
         background-position: center !important;
+        min-height: 500px;
+        background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
+                    url('<?php echo get_template_directory_uri(); ?>/assets/images/BusPaysage.jpg') center/cover no-repeat;
+        background-color: var(--blue);
         display: flex;
         align-items: center;
         justify-content: center;
         text-align: center;
         color: white;
         padding: 0 20px;
+        overflow: hidden;
+        animation: fadeIn 1.5s ease-out;
     }
 
-    .hero-content h1 {
-        font-size: 3rem;
-        margin-bottom: 15px;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        max-width: 800px;
+        padding: 0 20px;
+        transform: translateY(20px);
+        opacity: 0;
+        animation: slideUp 1s ease-out 0.5s forwards;
     }
 
-    .hero-content h2 {
-        font-size: 1.8rem;
-        margin-bottom: 30px;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    .hero-title {
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        margin-bottom: 20px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
+        line-height: 1.2;
     }
+    
+    .hero-subtitle {
+        font-size: clamp(1.2rem, 2vw, 1.8rem);
+        margin-bottom: 40px;
+        text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
+        line-height: 1.5;
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    @keyframes slideUp {
+        from { 
+            transform: translateY(20px);
+            opacity: 0;
+        }
+        to { 
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    /* 
+    ############################################# 
+                presentation-section  
+    #############################################
+    */
 
     .presentation-content {
         background-color: white;
@@ -270,7 +362,7 @@
     }
 
     .box {
-        padding: 4em 3em;  
+        padding: 3em 3em;  
         flex-direction: column;
         position: relative; 
         align-items: center;
@@ -280,7 +372,7 @@
         position: relative;
     }
 
-    span {
+    .box-container span {
         position: absolute;
         top: 50%;
         left: 50%;
@@ -364,52 +456,82 @@
         }
     }
 
+    /* 
+    ############################################# 
+                timeline-section  
+    #############################################
+    */
+
     .timeline-content {
-        max-width: 768px;
+        max-width: 900px;
         margin: 0 auto; 
-    }
+        padding: 0 2rem;
+        margin-top: 3rem;
+    }       
 
     .timeline-item {
         position: relative;
-        padding-left: 2rem; 
-        padding-bottom: 2rem;
-        border-left: 2px solid var(--red);
+        padding-left: 3rem; 
+        padding-bottom: 3rem;
+        border-left: 3px solid var(--red);
+        margin-left: 1.5rem;
     }
 
     .timeline-item:last-child {
-        border-left: none;
+        padding-bottom: 0;
+        border-left: 3px solid transparent;
     }
 
     .timeline-dot {
         position: absolute;
-        left: -9px;
+        left: -15px;
         top: 0;
-        width: 1rem;
-        height: 1rem;
+        width: 1.8rem;
+        height: 1.8rem;
         background-color: var(--red);
         border-radius: 50%;
+        border: 4px solid white;
+        box-shadow: 0 0 0 3px var(--red);
     }
 
     .timeline-item-t {
-        font-size: 0.875rem;
+        font-size: 1.1rem;
         color: var(--red); 
-        font-weight: 600; 
-        margin-bottom: 0.5rem;
+        font-weight: 700; 
+        margin-bottom: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
     }
 
     .timeline-item h3 {
-        font-size: 1.125rem ; 
-        font-weight: 600; 
-        margin-bottom: 0.5rem;
+        font-size: 1.5rem ; 
+        font-weight: 700; 
+        margin-bottom: 1rem;
+        color: #333;
     }
 
     .timeline-item p {
         color: #616161;
+        font-size: 1.1rem;
+        line-height: 1.6;
+        max-width: 700px;
+    }
+
+    /* 
+    ############################################# 
+                team-section  
+    #############################################
+    */
+
+    .team-content {
+        background-color: white;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        padding: 2rem;
     }
 
     .team-section {
-        padding: 4rem 0;
-        background-color: var(--light-gray);
+        padding: 2rem 0;
     }
 
     .container {
@@ -450,7 +572,6 @@
         padding-left: 1.5rem;
         color: #616161; */
     }
-
 
     .feature-list li {
         padding: 0.8rem 0;
@@ -500,13 +621,8 @@
     }
 
     .card-icon {
-        width: 70px;
-        height: 70px;
-        background-color: rgba(227,6,19,0.1);
-        border-radius: 50%;
-        align-items: center;
         margin: 0 auto 1.5rem;
-        font-size: 1.8rem;
+        font-size: 2rem;
     }
 
     .team-card h3 {
@@ -566,17 +682,119 @@
         box-shadow: 0 4px 12px rgba(227, 6, 19, 0.3);
     }
 
+    /* 
+    ############################################# 
+                soins-section  
+    #############################################
+    */
+
+    .soins-content {
+        margin: 4em auto;
+        max-width: 1200px;
+        padding: 0 20px; 
+    }
+
+    .soins-intro {
+        text-align: center;
+        font-size: 1.125rem;
+        color: #616161;
+        margin-bottom: 1rem;
+    }
+
+    .soins-container {
+        display: flex;
+        flex-direction: column; 
+        gap: 30px;
+        /* justify-content: space-evenly;
+        align-items: center;
+        max-width: 1400px;
+        margin: 0 auto; 
+        flex-wrap: wrap; */
+    }
+
+    .soins-card-row {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+    }
+
+    .soins-card {
+        width: 100%;
+        max-width: 500px;
+        min-height: 180px;
+        margin: 30px 20px;
+        padding: 25px; 
+        box-sizing: border-box; 
+        border-radius: 10px;
+        box-shadow: 0px 0px 45px -10px #d2d2d2;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        transition: 0.3s;
+        cursor: pointer;
+        position: relative;
+    }
+
+    .soins-card:hover {
+        transform: translateY(-15px);
+    }
+
+    .soins-card::before {
+        content: "";
+        position: absolute;
+        height: 5px;
+        background-color: var(--blue);
+        bottom: 0;
+        left: 0;
+        right: 100%;
+        border-radius: 50px;
+        transition: 0.3s;
+    }
+
+    .soins-card:hover::before {
+        right: 0%;
+    }
+
+    .soins-card h4 {
+        margin: 20px 0 7px 0;
+        font-size: 1.3em; 
+        color: var(--blue);
+    }
+
+    .soins-card p {
+        font-size: 0.9em;
+        color: #616161;
+    }
+
+    .soins-card ul {
+        padding-left: 20px;
+        margin: 0;
+    }
+    
+    .soins-card li {
+        margin-bottom: 10px;
+        color: #616161;
+        line-height: 1.5;
+    }
+
+    /* 
+    ############################################# 
+                      media  
+    #############################################
+    */
+
     @media (max-width: 768px) {
+        
         .hero {
             height: 60vh;
         }
-        .hero-content h1 {
-            font-size: 2rem;
+
+        .presentation-content p {
+        font-size: 1rem; 
         }
-        
-        .hero-content h2 {
-            font-size: 1.4rem;
-            margin-bottom: 45px;
+
+        .box {
+            padding: 1em 4em;  
         }
 
         .bus-grid {
@@ -589,6 +807,14 @@
 
         .bus-card, .opperation-card {
             padding: 1.5rem;
+        }
+
+        .soins-card-row {
+            flex-direction: column;
+        }
+        
+        .soins-card {
+            margin: 0 0;
         }
 
     }
