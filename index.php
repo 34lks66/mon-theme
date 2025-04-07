@@ -11,7 +11,7 @@
             <h1>Bus Dentaire Gersois</h1>
             <h2>Soins dentaires gratuits sur RDV</h2>
             <div class="hero-buttons">
-                <a href="#" class="btn btn-primary">Prendre RDV</a>
+                <a href="#rdv" class="btn btn-primary">Prendre RDV</a>
                 <a href="#lieux" class="btn btn-secondary">Voir les lieux</a>
             </div>
         </div>
@@ -87,7 +87,7 @@
     <section class="support">
         <div class="container">
             <h2 class="section-title">Comment nous soutenir ?</h2>
-            <center><p>Votre soutient nous permet de continuer à offir des soins dentaires gratuits aux populations isolées</p></center><br>
+            <p style="text-align: center;">Votre soutient nous permet de continuer à offir des soins dentaires gratuits aux populations isolées</p><br>
             <div class="support-content">
                     <div class="support-option" style="background-color: #e30613; color: white;">
                         <i class="fas fa-hand-holding-heart"></i>
@@ -97,6 +97,69 @@
             </div>
         </div>
     </section>
+
+    <section id="rdv" class="contact" style="background-color: #f8f9fa; padding: 40px;">
+        <h2 class="section-title">Prendre un rendez-vous</h2>                                                                              
+        <p style="text-align: center;">Vous avez besoin d'un rendez-vous ?  Écrivez-nous un message !</p><br>
+        <div class="contact-container">
+            <div class="formulaire">
+                <form id="contactForm" method="post" action="traitement_formulaire.php">
+                    <div class="form-group dual-input">
+                        <div class="input-wrapper">
+                            <label for="nom">Nom</label>
+                            <input placeholder="Votre nom" name="nom" id="nom" type="text" required>
+                        </div>
+                        <div class="input-wrapper">
+                            <label for="prenom">Prénom</label>
+                            <input placeholder="Votre prénom" name="prenom" id="prenom" type="text" required>
+                        </div>
+                    </div>
+    
+                    <div class="form-group dual-input">
+                        <div class="input-wrapper">
+                            <label for="email">Email</label>
+                            <input placeholder="exemple@email.com" name="email" id="email" type="email" required>
+                        </div>
+                        <div class="input-wrapper">
+                            <label for="numero">Téléphone</label>
+                            <input placeholder="06 XX XX XX XX" name="numero" id="numero" type="tel" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea placeholder="Votre message..." name="message" id="message" rows="5" required>
+                        </textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit" name="envoyer">Envoyer</button>
+                </form>
+            </div>
+            <div class="formulaire-box">
+                <div class="contact-info">
+                    <h3><i class="fas fa-info-circle"></i> Informations de contact</h3>
+                    <div class="contact-item">
+                        <i class="fas fa-phone-alt"></i>
+                        <span>05 62 62 57 90</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>dt32@croix-rouge.fr</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>11 Rue Dr Samalens, 32000 Auch</span>
+                    </div>
+                    <div class="contact-hours">
+                        <h4>Horaires</h4>
+                        <p>08h00-12h00</p>
+                        <p>13h00-17h00</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
 </div>
 
 <?php include_once('footer.php'); ?>
@@ -305,6 +368,183 @@
         margin-bottom: 20px;
         color: white;
     }
+
+    .contact-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    background-color: white;
+    min-height: 500px;
+    padding: 0;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    overflow: hidden;
+    flex-direction: row-reverse;
+    }
+
+    .formulaire {
+        width: 60%;
+        padding: 40px;
+    }
+
+    .formulaire form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .formulaire input, textarea {
+    margin: 10px 0;
+    padding: 10px;
+    border: none;
+    outline: none;
+    border-bottom: 2px solid #e4e4ec;
+    transition: 0.2s;
+    width: 100%;
+    background: transparent;
+    }
+
+    .formulaire input:hover {
+        border-bottom: 2px solid var(--blue);     
+    }
+
+    .formulaire input:focus {
+        border-bottom: 2px solid var(--blue);
+    }   
+
+    .formulaire textarea:hover {
+        border-bottom: 2px solid var(--blue);     
+    }
+
+    .formulaire textarea:focus {
+        border-bottom: 2px solid var(--blue);
+    }   
+
+
+    .dual-input {
+        flex-direction: row;
+        gap: 20px;
+    }
+
+    .dual-input .input-wrapper {
+        flex: 1;
+    }
+
+    .input-wrapper {
+        position: relative;
+    }
+
+    label {
+        font-weight: 500;
+        color: #333;
+        font-size: 0.9rem;
+    }
+
+    input, textarea {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid #e0e0e0;
+        border-radius: 6px;
+        font-size: 1rem;
+        transition: all 0.3s;
+    }
+
+    textarea {
+        resize: vertical;
+        min-height: 120px;
+    }
+
+    .submit {
+        background-color: var(--blue);
+        color: white;
+        border: none;
+        padding: 15px 30px;
+        border-radius: 6px;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .submit:hover {
+        background-color: #1a9ca6;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(31, 179, 191, 0.3);
+    }
+
+    .formulaire-box {
+        width: 40%;
+        background-color: var(--blue);
+        padding: 40px;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .contact-info {
+        max-width: 300px;
+        margin: 0 auto;
+    }
+
+    .contact-info h3 {
+        font-size: 1.5rem;
+        margin-bottom: 30px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .contact-item {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 20px;
+        font-size: 1rem;
+    }
+
+    .contact-item i {
+        font-size: 1.2rem;
+        width: 24px;
+        text-align: center;
+    }
+
+    .contact-hours {
+        margin-top: 40px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .contact-hours h4 {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+    }
+
+    .success-message, .error-message {
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 6px;
+    }
+
+    .success-message {
+        background-color: #d4edda;
+        color: #155724;
+    }
+
+    .error-message {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
     
     @media (max-width: 768px) {
         .hero {
@@ -368,6 +608,71 @@
         targetElement.scrollIntoView({
             behavior: 'smooth'
         });
+    });
+
+    document.querySelector('.btn-primary').addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        const targetElement = document.querySelector(targetId);
+        targetElement.scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
+
+    document.getElementById('contactForm').addEventListener('submit', function(event) {
+        const form = event.target;
+        const inputs = form.querySelectorAll('input[required], textarea[required]');
+        let isValid = true;
+        
+        inputs.forEach(input => {
+            if(!input.value.trim()) {
+                input.style.borderColor = '#dc3545';
+                isValid = false;
+            } else {
+                input.style.borderColor = '#e0e0e0';
+            }
+        });
+        
+        if(!isValid) {
+            event.preventDefault();
+            Swal.fire({
+                icon: 'error',
+                title: 'Champs manquants',
+                text: 'Veuillez remplir tous les champs obligatoires',
+            });
+        }
+    });
+
+    document.getElementById('contactForm').addEventListener('submit', function(event) {
+        // Empêche l'envoi du formulaire par défaut
+        event.preventDefault(); 
+
+        const email = document.getElementById('email').value;
+        const nom = document.getElementById('nom').value;
+        const prenom = document.getElementById('prenom').value;
+        const message = document.getElementById('message').value;
+
+        // Vérification que tous les champs sont remplis
+        if (email && nom && prenom && message) {
+            // Envoi du formulaire
+            this.submit(); // Envoie le formulaire après la validation
+
+            // Affichage d'une alerte de succès
+            Swal.fire({
+                icon: 'success',
+                title: 'Message envoyé',
+                text: 'Votre message a bien été envoyé.',
+                showConfirmButton: false,
+                timer: 1500
+            });
+        } else {
+            // Affichage d'une alerte d'erreur si un champ est manquant
+            Swal.fire({
+                icon: 'error',
+                title: 'Erreur',
+                text: 'Veuillez remplir tous les champs.',
+            });
+        }
     });
 </script>
 

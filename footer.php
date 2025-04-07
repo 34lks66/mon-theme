@@ -5,8 +5,8 @@
         <div class="contact">
             <h3>Contactez-nous</h3>
             <p><i class="fa fa-phone"></i> 05 62 62 57 90</p>
+            <p><i class="fa fa-envelope"></i> dt32@croix-rouge.fr</p>
             <p><i class="fa fa-location-arrow"></i> 11 Rue Dr Samalens, 32000 Auch</p>
-            <p><i class="fa fa-envelope"></i> alexandre.oberdorf@croix-rouge.fr</p>
         </div>
         <div class="legal">
             <h3>Informations légales</h3>
