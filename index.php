@@ -92,7 +92,7 @@
                     <div class="support-option" style="background-color: #e30613; color: white;">
                         <i class="fas fa-hand-holding-heart"></i>
                         <h3>Faire un don</h3>
-                        <a href="#" class="btn btn-light">Je donne</a>
+                        <a href="<?php echo site_url('/comment-nous-soutenir');?>" class="btn btn-light">Je donne</a>
                     </div>
             </div>
         </div>
@@ -128,8 +128,7 @@
                     
                     <div class="form-group">
                         <label for="message">Message</label>
-                        <textarea placeholder="Votre message..." name="message" id="message" rows="5" required>
-                        </textarea>
+                        <textarea placeholder="Votre message..." name="message" id="message" rows="5" required></textarea>
                     </div>
                     
                     <button type="submit" class="submit" name="envoyer">Envoyer</button>

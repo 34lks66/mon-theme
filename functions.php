@@ -111,4 +111,20 @@ add_action('wp_ajax_nopriv_get_ville_info', 'get_ville_info');
 
 add_image_size('my_custom_size', 60, 60, true);
 
+function afficher_logos_partenaires($max = 50) {
+    if(!is_page()) return;
+    $page_id = get_the_ID();
+    for($i = 1; $i <= $max; $i++) {
+        $image = get_field("partenaire_$i", $page_id);
+        if($image && isset($image['url'])){
+            echo '<div class="logo-item">';
+            echo '<img src="' . esc_url($image['url']) . '" alt="' . esc_attr($image['alt']) .' ">';
+            echo '</div>';
+        }
+    }
+}
+
+// Création automatique des champs dans le groupe ACF (logos partenaires)
+
+
 ?>

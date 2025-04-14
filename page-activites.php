@@ -5,7 +5,6 @@
 
 <?php require_once('menu.php'); ?>
 
-
 <div class="content">
 
 <section class="hero">
@@ -19,7 +18,7 @@
     <div class="presentation-content">
         <h2 class="section-title">Notre Mission</h2>
         <p style="text-align: center;">Le Bus Dentaire Gersois incarne une solution mobile pour offrir des soins dentaires <i style="color: #e30613;">gratuits</i> aux populations isolées.</p>
-            <div class="presentation-c" style="background-color: #e3f2fd ;">
+            <div class="presentation-c" style="background-color: #ffebee;">
                 <h4>Contexte</h4>
                 <!-- <p>Face à la désertification médicale dans le Gers, seulement un dentiste pour 1 641 habitants et 25% des habitants renoncent aux soins faute de praticiens ou de mobilité.</p> -->
                 <p>Face à la désertification médicale dans le Gers, de nombreux habitants renoncent à se faire soigner, faute de praticiens disponible à proximité ou simplement problème de mobilité.</p> 
@@ -82,8 +81,8 @@
                 </div>
             </div>
             <div class="presentation-grid">
-                <div class="presentation-c" style="background-color: #ffebee;">
-                    <h4 style="color: #e30613;font-size: 20px;">Notre Engagement</h4>
+                <div class="presentation-c" style="background-color: #e3f2fd ;">
+                    <h4 style="color: #0077b6;font-size: 20px;">Notre Engagement</h4>
                     <p>Notre bus dentaire apporte une solution rapide pour répondre à l'urgence en promulguant des soins spécifiques aux populations isolées.</p> 
                 </div>
             </div>
@@ -97,7 +96,7 @@
             <div class="timeline-dot"></div>
             <div class="timeline-item-t">Octobre 2022</div>
             <h3>Lancement du projet</h3>
-            <p>Début de l'initiative avec une vision claire : apporter des soins dentaires aux zones rurales du Gers.</p>
+            <p>Début de l'initiative avec une vision claire : répondre à l'urgence dentaire auprès des populations isolées du Gers, en réalisant des soins et un suivi régulier.</p> 
         </div>
         <div class="timeline-item">
             <div class="timeline-dot"></div>
@@ -168,28 +167,28 @@
         </div>
     </div>
 </section>
-<br>
+
 <section class="soins">
     <div class="soins-content">
         <h2 class="section-title">Que propose le Bus Dentaire ?</h2>
-        <p class="soins-intro">Des soins dentaires gratuits et accessibles à tous</p>
-        <p class="soins-intro">Nous offrons une variété de soins, allant du simple détartrage à l'extraction des dents</p>
+        <p class="soins-intro">Le Bus Dentaire vous offre des soins dentaires gratuits et accessibles à tous,</p>
+        <p class="soins-intro">allant du simple détartrage à l'extraction des dents sauf prothèse</p>
         <div class="soins-container">
             <div class="soins-card-row">
                 <div class="soins-card">
-                    <h4><i class="fas fa-tooth"></i> Soins Dentaires Essentiels</h4>
+                    <h4><i class="fas fa-tooth"></i> Soins Essentiels Préventifs</h4>
                     <ul>
-                        <li>Détartrage complet</li>
-                        <li>Hygiène bucco-dentaire</li>
-                        <li>Traitement des caries (Plombage et composites)</li>
+                        <li>Détartrage</li>
+                        <li>Bilan bucco-dentaire</li>
+                        <li>Conseils d'hygiène bucco-dentaire</li>
                     </ul>
                 </div>
                 <div class="soins-card">
-                    <h4><i class="fas fa-syringe"></i> Autres interventions</h4>
+                    <h4><i class="fas fa-syringe"></i> Soins Curatifs</h4>
                     <ul>
-                        <li>Dévitalisation dentaire</li>
+                        <li>Traitement des caries</li>
+                        <li>Soins des gencives</li>
                         <li>Extraction des dents</li>
-                        <li>Couronnes</li>
                     </ul>
                 </div>
             </div>
@@ -197,9 +196,9 @@
                 <div class="soins-card">
                     <h4><i class="fas fa-shield-alt"></i> Prévention et Éducation</h4>
                     <ul>
-                        <li>Conseils en hygiène bucco-dentaire.</li>
                         <li>Sensibilisation à l’importance du brossage et des soins réguliers.</li>
-                        <li>Sessions éducatives dans les écoles pour apprendre aux plus jeunes à protéger leurs dents.</li>
+                        <li> Journées de santé agricoles dans les communes d'interventions.</li> 
+                        <li>Sessions éducatives pour apprendre aux plus jeunes à protéger leurs dents.</li>
                     </ul>
                 </div>
                 <div class="soins-card">
@@ -207,6 +206,7 @@
                     <ul>
                         <li>Tous nos soins sont entièrement gratuits, sans distinction ni condition.</li>
                         <li>Une équipe bienveillante prête à vous accueillir et répondre à vos besoins.</li>
+                        <li>Une prise en charge rapide et un suivi régulier de tous les actes réalisés sur place.</li>
                     </ul>
                 </div>
             </div>
@@ -345,7 +345,7 @@
     }
 
     .presentation-c h4 {
-        color: var(--blue);
+        color: var(--red);
         font-size: 20px;
     }
 
@@ -379,7 +379,7 @@
         transform: translate(-50%, -50%);
         font-size: 2em; 
         font-weight: 500;
-        color: var(--blue)
+        color: var(--red)
     }
 
     svg {
@@ -389,7 +389,7 @@
 
     svg circle {
         fill: none;
-        stroke: var(--blue);
+        stroke: var(--red);
         stroke-width: 10px;
         transform: translate(5px, 5px);
         stroke-linecap: round;
@@ -689,7 +689,7 @@
     */
 
     .soins-content {
-        margin: 4em auto;
+        margin: 2em auto;
         max-width: 1200px;
         padding: 0 20px; 
     }
@@ -722,14 +722,13 @@
         width: 100%;
         max-width: 500px;
         min-height: 180px;
-        margin: 30px 20px;
+        margin: 20px 20px;
         padding: 25px; 
         box-sizing: border-box; 
         border-radius: 10px;
         box-shadow: 0px 0px 45px -10px #d2d2d2;
         display: flex;
         flex-direction: column;
-        justify-content: center;
         transition: 0.3s;
         cursor: pointer;
         position: relative;

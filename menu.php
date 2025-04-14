@@ -12,9 +12,9 @@
         <li><a href="<?php echo site_url('/'); ?>">Accueil</a></li>
         <li><a href="#">Lieux & Planning</a></li>
         <li><a href="#">Témoignages & Interviews</a></li>
-        <li><a href="">Comment nous soutenir</a></li>
+        <li><a href="<?php echo site_url('/comment-nous-soutenir');?>">Comment nous soutenir</a></li>
         <li><a href="<?php echo site_url('/activites'); ?>">Activités</a></li>
-        <li><a href="#">Contact</a></li>
+        <li><a href="<?php echo site_url('/contact'); ?>">Contact</a></li>
     </ul>
 </nav>
 
