@@ -10,10 +10,16 @@
     </button>
     <ul class="menu" id="menu">
         <li><a href="<?php echo site_url('/'); ?>">Accueil</a></li>
-        <li><a href="#">Lieux & Planning</a></li>
-        <li><a href="#">Témoignages & Interviews</a></li>
-        <li><a href="<?php echo site_url('/comment-nous-soutenir');?>">Comment nous soutenir</a></li>
+        <li><a href="<?php echo site_url('/lieux-planning');?>">Prise de rendez-vous</a></li>
+        <!-- <li><a href="#">Témoignages & Interviews</a></li> -->
         <li><a href="<?php echo site_url('/activites'); ?>">Activités</a></li>
+        <li class="dropdown">
+            <a href="#">Comment nous soutenir</a>
+            <div class="dropdown-menu">
+                <a href="<?php echo site_url('/faire-un-don');?>">Faire un don</a>
+                <a href="<?php echo site_url('/comment-nous-soutenir');?>">Devenez partenaire !</a>
+            </div>
+        </li>
         <li><a href="<?php echo site_url('/contact'); ?>">Contact</a></li>
     </ul>
 </nav>
@@ -93,6 +99,41 @@
         background-color: #e30613;
     }
 
+    .dropdown {
+        position: relative;
+    }
+
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background-color: white;
+        min-width: 200px;
+        box-shadow: 0 8px 16px rgba(255, 0, 0, 0.1);
+        z-index: 1;
+        border-radius: 10px;
+        padding: 10px 0;
+        /* border: 2px solid var(--blue);  */
+    }
+
+    .dropdown-menu a {
+        color:  black ;
+        padding: 10px 15px;
+        display: block;
+        text-decoration: none;
+        transition: background-color 0.3s;
+    }
+
+    .dropdown-menu a:hover {
+        background-color: #c00511;
+        color: white;
+    }
+
+    .dropdown:hover .dropdown-menu {
+        display: block;
+    }
+
     @media (max-width: 768px){
         .menu {
             display: none;
@@ -117,6 +158,18 @@
 
         .menu.active {
             display: flex;
+        }
+
+        .dropdown-menu {
+            position: static;
+            background-color: #e30613;
+            width: 100%;
+            box-shadow: none;
+            border-radius: 0;
+        }
+        
+        .dropdown-menu a {
+            padding: 8px 15px;
         }
     }
 </style>

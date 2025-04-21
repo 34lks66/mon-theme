@@ -2,7 +2,6 @@
 
 <?php require_once('header.php'); ?>
 <?php require_once('head.php'); ?>
-
 <?php require_once('menu.php'); ?>
 
 <div class="content">
@@ -10,7 +9,7 @@
 <section class="hero">
     <div class="hero-content">
         <h1 class="hero-title">Qui sommmes-nous ?</h1>
-        <p class="hero-subtitle">Rendre les soins dentaires accessibles aux Gersois, même dans les zones rurales isolées</p>
+        <p class="hero-subtitle">Rendre les soins dentaires accessibles aux Gersois, dans les zones rurales isolées</p>
     </div>
 </section>
 
@@ -21,7 +20,7 @@
             <div class="presentation-c" style="background-color: #ffebee;">
                 <h4>Contexte</h4>
                 <!-- <p>Face à la désertification médicale dans le Gers, seulement un dentiste pour 1 641 habitants et 25% des habitants renoncent aux soins faute de praticiens ou de mobilité.</p> -->
-                <p>Face à la désertification médicale dans le Gers, de nombreux habitants renoncent à se faire soigner, faute de praticiens disponible à proximité ou simplement problème de mobilité.</p> 
+                <p>Face à la désertification médicale dans le Gers, de nombreux habitants renoncent à se faire soigner, faute de praticiens disponibles à proximité ou simplement problème de mobilité.</p> 
                 <div class="box-container">
                     <div class="box">
                         <div class="pourcent">
@@ -80,12 +79,12 @@
                     </div>
                 </div>
             </div>
-            <div class="presentation-grid">
+            <br>
                 <div class="presentation-c" style="background-color: #e3f2fd ;">
                     <h4 style="color: #0077b6;font-size: 20px;">Notre Engagement</h4>
-                    <p>Notre bus dentaire apporte une solution rapide pour répondre à l'urgence en promulguant des soins spécifiques aux populations isolées.</p> 
+                    <p>Notre bus dentaire apporte une solution rapide pour répondre à l'urgence en promulguant des soins spécifiques aux populations isolées.
+                    Chaque action du Bus Dentaire est guidée par les 7 principes de la <b style="color: #e30613;">Croix-Rouge</b> : <br><b>Humanité, Impartialité, Neutralité, Indépendance, Volontariat, Unité et Universalité.</b></p> 
                 </div>
-            </div>
     </div>
 </section>
 <br>
@@ -163,7 +162,7 @@
                 <h3>Mode de fonctionnement</h3>
             </div>
             <p>Le bus se déplace 2 à 3 fois par semaine principalement les lundis, mardis et mercredis dans 10 communes rurales isolées du Gers</p>
-            <a href="#" class="btn btn-primary">voir le planning</a>
+            <a href="<?php echo site_url('/lieux-planning');?>" class="btn btn-primary">voir le planning</a>
         </div>
     </div>
 </section>
@@ -171,24 +170,28 @@
 <section class="soins">
     <div class="soins-content">
         <h2 class="section-title">Que propose le Bus Dentaire ?</h2>
-        <p class="soins-intro">Le Bus Dentaire vous offre des soins dentaires gratuits et accessibles à tous,</p>
-        <p class="soins-intro">allant du simple détartrage à l'extraction des dents sauf prothèse</p>
+        <p class="soins-intro">Le Bus Dentaire vous offre des soins dentaires <b style="color: #e30613;">gratuits</b> et <b style="color: #e30613;">accessibles à tous</b></p>
+        <!-- <p class="soins-intro">allant du <b style="color: #e30613;">détartrage à l'extraction des dents</b> sauf prothèse</p> -->
         <div class="soins-container">
             <div class="soins-card-row">
                 <div class="soins-card">
-                    <h4><i class="fas fa-tooth"></i> Soins Essentiels Préventifs</h4>
+                    <h4><i class="fas fa-tooth"></i> Soins Préventifs</h4>
                     <ul>
-                        <li>Détartrage</li>
-                        <li>Bilan bucco-dentaire</li>
+                        <li>Contrôle bucco-dentaire</li>
                         <li>Conseils d'hygiène bucco-dentaire</li>
+                        <li>Détartrage</li>
                     </ul>
                 </div>
                 <div class="soins-card">
                     <h4><i class="fas fa-syringe"></i> Soins Curatifs</h4>
                     <ul>
+                        <li>Urgence de la douleur</li>
                         <li>Traitement des caries</li>
                         <li>Soins des gencives</li>
                         <li>Extraction des dents</li>
+                        <li>Rescellement de couronnes ou de bridge</li>
+                        <li>Retouche d'appareil</li>
+                        <b><li style="color: #e30613;">Pas de prothèse dentaire, ni d'implant</li></b>
                     </ul>
                 </div>
             </div>
@@ -197,14 +200,14 @@
                     <h4><i class="fas fa-shield-alt"></i> Prévention et Éducation</h4>
                     <ul>
                         <li>Sensibilisation à l’importance du brossage et des soins réguliers.</li>
-                        <li> Journées de santé agricoles dans les communes d'interventions.</li> 
-                        <li>Sessions éducatives pour apprendre aux plus jeunes à protéger leurs dents.</li>
+                        <li>Une journée de prévention mensuelle dans chaque commune d'intervention.</li> 
+                        <!-- <li>Sessions éducatives pour apprendre aux plus jeunes à protéger leurs dents.</li> -->
                     </ul>
                 </div>
                 <div class="soins-card">
                     <h4><i class="fas fa-heart"></i> Soins Gratuits et Accessibles à Tous !</h4>
                     <ul>
-                        <li>Tous nos soins sont entièrement gratuits, sans distinction ni condition.</li>
+                        <li>Tous nos soins sont entièrement gratuits.</li>
                         <li>Une équipe bienveillante prête à vous accueillir et répondre à vos besoins.</li>
                         <li>Une prise en charge rapide et un suivi régulier de tous les actes réalisés sur place.</li>
                     </ul>
@@ -214,8 +217,28 @@
     </div>
 </section>
 <br>
-<section class="statistic">
-    <h2 class="section-title">Statistiques</h2>
+<section class="stats" style="background-color: #f8f9fa;">
+        <h2 class="section-title">Statistiques</h2>
+            <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number" style="color: #e30613;">1000+</div>
+                    <div class="stat-label">Patients soignés et accompagnés</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" style="color: #0077b6;">10</div>
+                    <div class="stat-label">Communes rurales isolées</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" style="color: #e30613;">14 000</div>
+                    <div class="stat-label">Kilomètres parcourus</div>
+                </div>
+            </div>
+        </div>
+</section>
+
+<section class="t&i">
+    <h2 class="section-title">Témoignages & Interviews</h2>
 </section>
 
 </div>
@@ -259,10 +282,10 @@
         position: relative;
         height: 80vh;
         background-size: 100% auto !important;
-        background-position: center !important;
+        background-position: center 60% !important;
         min-height: 500px;
         background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
-                    url('<?php echo get_template_directory_uri(); ?>/assets/images/BusPaysage.jpg') center/cover no-repeat;
+                    url('<?php echo get_template_directory_uri(); ?>/assets/images/activites.jpg') center/cover no-repeat;
         background-color: var(--blue);
         display: flex;
         align-items: center;
@@ -342,6 +365,7 @@
         padding: 1.5rem; 
         text-align: center;
         border-radius: 0.5rem;
+        opacity: 1; 
     }
 
     .presentation-c h4 {
@@ -366,6 +390,9 @@
         flex-direction: column;
         position: relative; 
         align-items: center;
+        opacity: 0; 
+        transform: translateY(20px);
+        transition: opacity 0.5s ease, transform 0.5s ease;
     }
 
     .pourcent {
@@ -778,6 +805,30 @@
 
     /* 
     ############################################# 
+                stats-section  
+    #############################################
+    */
+
+    .stats {
+        padding: 80px 0;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 30px;
+        text-align: center;
+    }
+
+    .stat-number {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+
+    /* 
+    ############################################# 
                       media  
     #############################################
     */
@@ -819,3 +870,45 @@
     }
 
 </style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() { 
+        const animateStatsSection = () => {
+            const statsSection = document.querySelector('.presentation-c');
+            const boxes = document.querySelectorAll('.box');
+
+            boxes.forEach(box => {
+                box.style.opacity = '0';
+                box.style.transform = 'translateY(20px)';
+                box.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+
+                const circles = box.querySelectorAll('svg circle:nth-child(2)');
+                circles.forEach(circle => {
+                    circle.style.animation = 'none';
+                });
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                         boxes.forEach((box, index) => {
+                            setTimeout(() => {
+                                box.style.opacity = '1';
+                                box.style.transform = 'translateY(0)';
+
+                                const circle = box.querySelector('svg circle:nth-child(2)');
+                                if(circle){
+                                    void circle.offsetWidth;
+                                    circle.style.animation = '';
+                                }
+                            },  index * 350);
+                        });
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1});
+            observer.observe(statsSection);
+        };
+        animateStatsSection();
+    });
+</script>

@@ -1,31 +1,78 @@
 <!-- <div id="map" style="height: 500px;"></div> -->
 <!-- <div id="map" style="height: 1100px; width: 75%; margin: 0 auto;"></div> -->
+
+<?php require_once('header.php'); ?>
 <div id="map" class="map-container"></div>
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
+        // var map = L.map('map').setView([43.70, 0.46], 9);
         var map = L.map('map', {
-            dragging: false,
-            scrollWheelZoom: false,
-            doubleClickZoom: false,
-            boxZoom: false,
-            keyboard: false
-        }).setView([43.60, 0.53], 10); // centré sur le Gers
+             dragging: false,
+             scrollWheelZoom: false,
+             doubleClickZoom: false,
+             boxZoom: false,
+             keyboard: false,
+             trackResize: false,
+             touchZoom: false
+        }).setView([43.70, 0.46], 9);
+        // }).setView([43.60, 0.53], 10); // centré sur le Gers
         // var map = L.map('map', {
-        //     center: [43.55, 0.6],
-        //     zoom: 9.6,
-        //     maxBounds: [
-        //         [43.2, -0.4],
-        //         [44.0, 1.1]
-        //     ],
-        //     minZoom: 9,
-        //     maxZoom: 13
-        // });
+        //      center: [43.55, 0.6],
+        //      zoom: 100,
+        //      maxBounds: [
+        //          [43.2, -0.4],
+        //          [44.0, 1.1]
+        //      ],
+        //      minZoom: 9,
+        //      maxZoom: 13
+        //  });
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; OpenStreetMap contributors'
+        // fond de carte
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> & Carto',
+            subdomains: 'abcd',
+            maxZoom: 19
         }).addTo(map);
 
+        // contours du Gers
+        fetch('https://raw.githubusercontent.com/gregoiredavid/france-geojson/master/departements/32-gers/departement-32-gers.geojson')
+            .then(response => response.json())
+            .then(data => {
+                var gersBoundary = L.geoJSON(data, {
+                    style: {
+                        color: '#e30613',
+                        weight: 2,
+                        fillOpacity: 0
+                    }
+                }).addTo(map);
+
+                // map.fitBounds(gersBoundary.getBounds(), {
+                //     padding: [100,150],
+                //     maxZoom: 10
+                // });
+
+                map.fitBounds(gersBoundary.getBounds());
+
+                var outer = turf.polygon([[
+                    [-10, 60],
+                    [40, 60],
+                    [40, 30],
+                    [-10, 30],
+                    [-10, 60]
+                ]]);
+
+                var mask = turf.difference(outer, data);
+
+                L.geoJSON(mask, {
+                    style: {
+                        fillColor: 'rgba(0,0,0,0.4)',
+                        color: 'none',
+                        fillOpacity: 0.8
+                    }
+                }).addTo(map);
+            });
+            
         var popupStyle = {
             minWidth: 350, 
             maxWidth: 400, 
@@ -34,23 +81,26 @@
 
         function ajusterTailleMap(){
             var mapContainer = document.querySelector('.map-container');
+            //var mapContainer = document.getElementById('map');
             if(window.innerWidth <= 768){
                 map.setZoom(9);
                 map.dragging.enable();
                 map.scrollWheelZoom.enable();
-                mapContainer.style.height = '500px';
-                mapContainer.style.width = '95%';
+
+                mapContainer.style.height = '700px';
+                mapContainer.style.width = '100%';
                 mapContainer.style.margin = '0 auto';
 
                 popupStyle.maxWidth = '90%';
                 popupStyle.minWidth = '90%';
             } else {
-                mapContainer.style.height = '1100px';
-                mapContainer.style.width = '75%';
+                map.setZoom(10);
+                mapContainer.style.height = '900px';
+                mapContainer.style.width = '90%';
                 mapContainer.style.margin = '0 auto'
 
-                popupStyle.maxWidth = '350px';
-                popupStyle.minWidth = '400px';
+                popupStyle.maxWidth = '400px';
+                popupStyle.minWidth = '350px';
             }
             map.invalidateSize();
         }
@@ -71,19 +121,50 @@
             { nom: "Miradoux", lat: 43.998, lon: 0.756, id: 10}
         ];
 
+        var busIcon = L.icon({
+            iconUrl: '<?php echo get_template_directory_uri(); ?>/assets/images/bus_icon.png',
+            iconSize: [40, 40],
+            iconAnchor: [16, 32],
+            popupAnchor: [0, -32]
+        });
+
         villes.forEach(ville => {
             //var marker = L.marker([ville.lat, ville.lon]).addTo(map).bindPopup('<b>' + ville.nom + '</b><br>Chargement des informations...'); 
-            var marker = L.marker([ville.lat, ville.lon]).addTo(map).bindPopup('<div class="popup-loading">Chargement des informations...</div>', popupStyle); 
+            // var marker = L.marker([ville.lat, ville.lon], {icon: busIcon}).addTo(map).bindPopup('<div class="popup-loading">Chargement des informations...</div>', popupStyle);
+            var marker = L.marker([ville.lat, ville.lon], {icon: busIcon}).addTo(map);
 
-             marker.on('click', function () {
-                 fetch('<?php echo admin_url("admin-ajax.php"); ?>?action=get_ville_info&ville_nom=' + encodeURIComponent(ville.nom))
-                     .then(response => response.text())
-                     .then(data => {
-                        // marker.bindPopup(data).openPopup();
-                        marker.setPopupContent('<div class="popup-content">' + data + '</div>') ;
-                        marker.openPopup();
-                     });
-             });
+            var customPopup = L.popup({
+                offset: L.point(0, -50),
+                className: 'custom-map-popup',
+                autoPan: false,
+                closeOnClick: false, 
+                autoClose: false
+            });
+
+            marker.on('click', function (e) {
+                map.closePopup();
+                customPopup.setContent('<p>Chargement...</p>');
+                customPopup.setLatLng(marker.getLatLng()).openOn(map);
+
+                // document.getElementById('popupOverlay').style.display = 'flex';
+                // document.getElementById('popupContent').innerHTML = '<p>Chargement...</p>';
+                fetch('<?php echo admin_url("admin-ajax.php");?>?action=get_ville_info&ville_nom=' + encodeURIComponent(ville.nom))
+                    .then(response => response.text())
+                    .then(data => {
+                        customPopup.setContent(data);
+                        // document.getElementById('popupContent').innerHTML = data;
+                    });
+            });
+
+            //  marker.on('click', function () {
+            //      fetch('<?php echo admin_url("admin-ajax.php"); ?>?action=get_ville_info&ville_nom=' + encodeURIComponent(ville.nom))
+            //          .then(response => response.text())
+            //          .then(data => {
+            //             // marker.bindPopup(data).openPopup();
+            //             marker.setPopupContent(data) ;
+            //             marker.openPopup();
+            //          });
+            //  });
 
             // marker.on('click', function() {
             //     fetch('<?php echo admin_url("admin-ajax.php");?>?action=get_ville_info&ville_id= ' + ville.id)
@@ -106,160 +187,147 @@
 
         });
     });
+
+    // document.getElementById('closePopupBtn').onclick = function () {
+    // document.getElementById('popupOverlay').style.display = 'none';
+    // };
+
+    // window.onclick = function(event) {
+    // if (event.target.id === 'popupOverlay') {
+    //     document.getElementById('popupOverlay').style.display = 'none';
+    // }
+    // };
 </script>
 
 <style>
+    @import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@700&display=swap");
 
-    .popup-inner {
+    :root {
+        /* Fonts */
+        --font-title: "Montserrat", sans-serif;
+        --font-text: "Lato", sans-serif;
+    }
+
+    .custom-map-popup {
+        min-width: 250px;
         max-width: 300px;
+        padding: 0;
+        border-radius: 8px;
+        box-shadow: 0 3px 14px rgba(0,0,0,0.4);
+    }
+
+    .custom-map-popup .leaflet-popup-content-wrapper {
+        padding: 0;
+        border-radius: 8px;
+    }
+
+    .custom-map-popup .leaflet-popup-content {
+        margin: 0; 
+    }
+
+    .popup-container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .popup-image-container {
+        width: 100%;
+        height: 150px;
+        overflow: hidden;
+    }
+
+    .popup-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
     }
 
     .popup-content {
         padding: 15px;
-        font-size: 0.9rem;
-        white-space: nowrap;
-        min-width: 320px;
     }
 
-    .map-container {
-        transition: all 0.3s ease;
-        position: relative;
-        z-index: 1;
-    }
-
-    .custom-popup .leaflet-popup-content-wrapper {
-        border-radius: 8px;
-        box-shadow: 0 3px 14px rgba(0,0,0,0.4);
-        padding: 0;
-        min-width: 350px; 
-    }
-
-    .custom-popup .leaflet-popup-content {
-        margin: 0;
-        width: 100% !important;
-    }
-
-    .popup-content b {
+    .popup-title {
+        font-family: var(--font-title);
         color: #e30613;
-        font-size: 1.2em;
-        display: block;
-        margin-bottom: 10px;
-        border-bottom: 2px solid #0077b6; 
-        padding-bottom: 5px;
+        font-size: 18px;
+        margin: 0 0 10px 0;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #e30613;
     }
 
-    .popup-content p {
-        margin: 8px 0;
+    .popup-subtitle {
+        font-family: var(--font-title);
+        color: #333;
+        font-size: 16px;
+        margin: 10px 0 5px 0;
+    }
+
+    .popup-text {
+        font-family: var(--font-text);
+        color: #333;
+        font-size: 14px;
         line-height: 1.4;
     }
-
-    .popup-loading {
-        padding: 15px;
-        text-align: center;
-        color: #666;
+    
+    /* .popup-overlay {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
     }
 
-    .leaflet-popup-tip {
+    .popup {
         background: white;
-        box-shadow: none;
-    }
-
-    .popup-inner h3 {
-        color: #e30613;
-        font-size: 1.3rem;
-        margin: 0 0 10px 0;
-        padding-bottom: 8px;
-        border-bottom: 2px solid #0077b6;
-    }
-
-    .planning-section {
-        background-color: #f8f9fa;
-        padding: 10px;
-        border-radius: 5px;
-        margin: 10px 0;
-        overflow: visible;
-    }
-
-    .planning-section h4 {
-        color: #0077b6;
-        font-size: 1rem;
-        margin: 0 0 8px 0;
-        font-weight: 600;
-    }
-
-    .planning-section p {
-        margin: 0;
-        white-space: pre-line;
-        font-size: 0.9rem;
-        color: #333; 
-    }
-
-    .planning-section br {
-        display: block;
-        content: "";
-        margin: 5px 0; 
-    }
-
-    .popup-gallery {
-        max-height: 80px;
+        width: 350px;
+        max-width: 90%;
+        border-radius: 8px;
         overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        position: relative;
+        text-align: center;
+        padding-bottom: 10px;
     }
 
-    .popup-gallery img {
+    .popup img {
         width: 100%;
-        height: 80px;
-        object-fit: cover;
-        border-radius: 4px;
-        border: 1px solid #ddd;
-        transition: transform 0.3s ease;
+        height: auto;
+        display: block;
     }
 
-    .popup-gallery img:hover {
-        transform: scale(1.05);
-        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    .popup .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 18px;
+        cursor: pointer;
     }
 
-    .no-image {
-        font-style: italic;
-        color: #666;
-        font-size: 0.8rem;
-        text-align: center;
-        margin: 10px 0;
+    .popup h3 {
+        font-size: 18px;
+        margin: 15px 10px 10px;
     }
 
-    .popup-error {
-        padding: 15px;
-        color: #e30613;
-        text-align: center;
-        font-weight: 500;
-    }
- 
+    .popup p {
+        padding: 0 15px;
+    } */
+    
     @media (max-width: 768px){
+        .popup {
+            width: 90%;
+        }
+        
         .map-container {
             height: 500px !important;
             width: 95% !important;
             margin: 0 auto !important
         }
 
-        .custom-popup .leaflet-popup-content-wrapper {
-            min-width: 200px;
-            max-width: 90vh;
+        .custom-map-popup {
+            max-width: 250px;
         }
-
-        .popup-content {
-            min-width: 260px;
-            white-space: normal;
-        }
-
-        .menu.active {
-            position: fixed;
-            z-index: 1000;
-            width: 100%;
-        }    
-    
-        .menu.active ~ .map-container {
-            display: none; 
-        }
-
     }
 </style>
