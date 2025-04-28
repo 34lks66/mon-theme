@@ -39,6 +39,8 @@
         background-color: white;
         padding: 10px 20px;
         border-bottom: 4px solid #e30613; 
+        position: relative;
+        z-index: 1000;
     }
 
     .logo img {

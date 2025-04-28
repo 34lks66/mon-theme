@@ -6,12 +6,12 @@
 <div class="content">
 
 <div class="homepage">
-    <section class="hero" style="background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('<?php echo get_template_directory_uri(); ?>/assets/images/bus-dentaire2.jpg');">
+    <section class="hero" style="background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('<?php echo get_template_directory_uri(); ?>/assets/images/hero/index.jpg');">
         <div class="hero-content">
             <h1>Bus Dentaire Gersois</h1>
             <h2>Soins dentaires gratuits sur RDV</h2>
             <div class="hero-buttons">
-                <a href="#rdv" class="btn btn-primary">Prendre RDV</a>
+                <a href="<?php echo site_url('/lieux-planning');?>" class="btn btn-primary">Prendre RDV</a>
                 <a href="#lieux" class="btn btn-secondary">Voir les lieux</a>
             </div>
         </div>
@@ -55,39 +55,19 @@
             <h2 class="section-title">Notre Bus Dentaire</h2>
             <center><p>Le bus dentaire dispose de tout l'équipement nécessaire pour fournir des soins dentaires, allant du simple détartrage à l'extraction des dents. <br>Il est équipé d'un fauteuil dentaire, d'un système de radiologie, des consommables dentaires et de divers instruments spécialisés.</p></center><br>
             <div class="image-grid">
-                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/bus2.jpg" alt="Bus dentaire">
-                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/bus1.jpg" alt="Bus dentaire">
-                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/bus3.jpg" alt="Bus dentaire">
+                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/bus_presentation/bus2.jpg" alt="Bus dentaire">
+                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/bus_presentation/bus1.jpg" alt="Bus dentaire">
+                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/bus_presentation/bus3.jpg" alt="Bus dentaire">
             </div>
         </div>
     </section>
 
     <br><br>
 
-    <!-- <section class="stats" style="background-color: #f8f9fa;">
-            <div class="container">
-            <h2 class="section-title">Notre Impact</h2>
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <div class="stat-number" style="color: #e30613;">1000+</div>
-                    <div class="stat-label">Patients soignés et accompagnés</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number" style="color: #0077b6;">10</div>
-                    <div class="stat-label">Communes rurales isolées</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number" style="color: #e30613;">14 000</div>
-                    <div class="stat-label">Kilomètres parcourus</div>
-                </div>
-            </div>
-        </div>
-    </section> -->
-
     <section class="support">
         <div class="container">
             <h2 class="section-title">Comment nous soutenir ?</h2>
-            <p style="text-align: center;">Votre soutient nous permet de continuer à offir des soins dentaires gratuits aux populations isolées</p><br>
+            <p style="text-align: center;">Votre soutient nous permet de continuer à offir des soins dentaires gratuits aux populations vulnérables et isolées</p><br>
             <div class="support-content">
                     <div class="support-option" style="background-color: #e30613; color: white;">
                         <i class="fas fa-hand-holding-heart"></i>
@@ -97,6 +77,37 @@
             </div>
         </div>
     </section>
+
+    <section class="press">
+        <div class="container">
+            <h2 class="section-title">La presse parle de nous !</h2>
+            <div class="press-grid">
+                <?php
+                $press_query = new WP_Query([
+                    'post_type' => 'article_presse',
+                    'posts_per_page' => -1
+                ]);
+                
+                if($press_query->have_posts()) :
+                    while($press_query->have_posts()) : $press_query->the_post();
+                    $lien = get_field('lien_article');
+                    $image = get_field('image_article');
+                    if (is_array($image)) {
+                        $image = $image['url'];
+                    }
+                    $titre = get_field('titre_article');
+                ?>
+                <a href="<?= esc_url($lien);?>" target="_blank" class="press-card" style="background-image: url('<?= esc_url($image);?>');">
+                    <div class="press-overlay">
+                        <h3><?= esc_html($titre); ?></h3>
+                        <span>Lire la suite</span>
+                    </div>
+                </a>
+              <?php endwhile; wp_reset_postdata(); endif; ?>
+            </div>
+        </div>
+    </section>
+    <br>
 
 </div>
 
@@ -267,25 +278,8 @@
         transform: scale(1.03);
     }
 
-    /* .stats {
-        padding: 80px 0;
-    }
-
-    .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 30px;
-        text-align: center;
-    }
-
-    .stat-number {
-        font-size: 3rem;
-        font-weight: 700;
-        margin-bottom: 10px;
-    } */
-
     .support {
-        padding: 80px 0;
+        padding: 60px 0;
     }
 
     .support-content {
@@ -305,11 +299,86 @@
         margin-bottom: 20px;
         color: white;
     }
+
+    .press-grid {
+        display: flex;
+        margin-left: -10px;
+        width: auto;
+        /* grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px; */
+    }
+
+    .press-card {
+        width: calc(33.333% - 20px);
+        margin-left: 10px;
+        margin-bottom: 20px;
+        background-size: cover;
+        background-position: center;
+        border-radius: 10px;
+        color: white;
+        text-decoration: none;
+        overflow: hidden;
+        position: relative;
+        min-height: 240px;
+        transition: transform 0.3s ease;
+    
+        /* position: relative;
+        display: block;
+        height: 280px;
+        background-size: cover;
+        background-position: center;
+        overflow: hidden;
+        text-decoration: none;
+        color: white;
+        transition: transform 0.3s ease; */
+    }
+
+    .press-card:hover {
+        transform: scale(1.02);
+    }
+
+    .press-overlay {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        padding: 20px;
+        background: linear-gradient(transparent, rgba(0,0,0,0.7), transparent);
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        height: 100%;
+    }
+
+    .press-overlay h3 {
+        font-size: 1.1rem;
+        margin: 0 0 10px;
+        font-weight: bold;
+    }
+
+    .press_overlay span {
+        font-size: 0.9rem;
+        color: #fff;
+        text-decoration: underline;
+    }
+
+    @media (max-width: 1024px) {
+        .press-card {
+            width: calc(50% - 20px);
+        }
+    }
+
+    @media (max-width: 600px) {
+        .press-card {
+            width: 100%;
+            margin-left: 0;
+        }
+    }
     
     @media (max-width: 768px) {
         .hero {
             height: 60vh;
         }
+
         .hero-content h1 {
             font-size: 2rem;
         }
@@ -324,6 +393,10 @@
             flex-direction: column;
         }
         
+        .section-title {
+            font-size: 1.35rem;
+        }
+
         .btn {
             margin: 5px 0;
             width: 100%;
@@ -378,58 +451,15 @@
         });
     });
 
-    document.getElementById('contactForm').addEventListener('submit', function(event) {
-        const form = event.target;
-        const inputs = form.querySelectorAll('input[required], textarea[required]');
-        let isValid = true;
-        
-        inputs.forEach(input => {
-            if(!input.value.trim()) {
-                input.style.borderColor = '#dc3545';
-                isValid = false;
-            } else {
-                input.style.borderColor = '#e0e0e0';
-            }
-        });
-        
-        if(!isValid) {
-            event.preventDefault();
-            Swal.fire({
-                icon: 'error',
-                title: 'Champs manquants',
-                text: 'Veuillez remplir tous les champs obligatoires',
-            });
-        }
-    });
-
-    document.getElementById('contactForm').addEventListener('submit', function(event) {
-        // Empêche l'envoi du formulaire par défaut
-        event.preventDefault(); 
-
-        const email = document.getElementById('email').value;
-        const nom = document.getElementById('nom').value;
-        const prenom = document.getElementById('prenom').value;
-        const message = document.getElementById('message').value;
-
-        // Vérification que tous les champs sont remplis
-        if (email && nom && prenom && message) {
-            // Envoi du formulaire
-            this.submit(); // Envoie le formulaire après la validation
-
-            // Affichage d'une alerte de succès
-            Swal.fire({
-                icon: 'success',
-                title: 'Message envoyé',
-                text: 'Votre message a bien été envoyé.',
-                showConfirmButton: false,
-                timer: 1500
-            });
-        } else {
-            // Affichage d'une alerte d'erreur si un champ est manquant
-            Swal.fire({
-                icon: 'error',
-                title: 'Erreur',
-                text: 'Veuillez remplir tous les champs.',
+    src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"
+    document.addEventListener("DOMContentLoaded", function() {
+        const grid = document.querySelector('.press-grid');
+        if(grid){
+            new Masonry(grid, {
+                itemSelecor: '.press-card',
+                columnWidth: '.press-card',
+                percentPosition: true,
+                gutter: 20
             });
         }
     });

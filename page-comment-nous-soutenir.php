@@ -551,6 +551,14 @@
 
     @media (max-width: 768px) {
 
+        .section-title {
+            font-size: 1.6rem;
+        }
+
+        .partenaire {
+            padding: 2rem;
+        }
+
         .don-title p {
             font-size: 1.1rem; 
             text-align: justify;

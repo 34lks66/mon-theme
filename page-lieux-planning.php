@@ -39,7 +39,7 @@
                         le <b><?= esc_html($date); ?></b><br> 
                         <!-- de <?= esc_html($heure); ?><br> -->
                         de 9h à 12h et de 13h30 à 17h <br>
-                        au <b><?= esc_html($adresse); ?></b>.
+                        <i class="fa-solid fa-location-dot"></i> : <b><?= esc_html($adresse); ?></b>.
                     </p>
                 </div>
                 <button class="card_button">Prendre rendez-vous</button>
@@ -307,7 +307,7 @@
         text-decoration: none;
     }
 
-     /* 
+    /* 
     ############################################# 
                  formulaire de rdv 
     #############################################
@@ -344,14 +344,14 @@
     }
 
     .formulaire input, textarea {
-    margin: 10px 0;
-    padding: 10px;
-    border: none;
-    outline: none;
-    border-bottom: 2px solid #e4e4ec;
-    transition: 0.2s;
-    width: 100%;
-    background: transparent;
+        margin: 10px 0;
+        padding: 10px;
+        border: none;
+        outline: none;
+        border-bottom: 2px solid #e4e4ec;
+        transition: 0.2s;
+        width: 100%;
+        background: transparent;
     }
 
     .formulaire input:hover {
@@ -369,7 +369,6 @@
     .formulaire textarea:focus {
         border-bottom: 2px solid var(--blue);
     }   
-
 
     .dual-input {
         flex-direction: row;
@@ -485,11 +484,26 @@
         color: #155724;
     }
 
-    .error-message {
+    /* .error-message {
         background-color: #f8d7da;
         color: #721c24;
+    } */
+
+    .error {
+        border-color: #ff3860 !important;
     }
 
+    .error-message {
+        color: #ff3860;
+        font-size: 0.8em;
+        margin-top: 0.25rem;
+    }
+
+    /* Style pour le bouton pendant l'envoi */
+    button[disabled] {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
 
     /* 
     ############################################# 
@@ -498,6 +512,10 @@
     */
 
     @media (max-width: 768px) {
+        .section-title {
+            font-size: 1.45rem;
+        }
+
         .card {
             flex: 0 0 100% 
         }
@@ -508,6 +526,34 @@
             padding: 0.5em;
             margin: 0.5rem auto; 
         }
+
+        .contact-container {
+            margin: 0 -20px;
+            flex-direction: column;
+            min-height: auto;
+        }
+
+        .formulaire {
+            width: 100%;
+            padding: 20px;
+        }
+
+        .dual-input {
+            flex-direction: column;
+        }
+
+        .dual-input .input-wrapper {
+            width: 100%;
+        }
+
+        .submit {
+            width: 100%;
+        }
+
+        .formulaire-box {
+            display: none;
+        }
+        
     }
 
 </style>
@@ -577,40 +623,61 @@
     });
 
 
-    document.addEventListener("DOMContentLoaded", function() {
-        if(sessionStorage.getItem("formulaire_envoye") === "1"){
-            Swal.fire({
-                icon: 'success',
-                title: 'Message envoyé',
-                text: 'Votre message a bien été envoyé.',
-                showConfirmButton: false,
-                timer: 2000
-            });
-            sessionStorage.removeItem("formulaire_envoye");
-        }
+    // document.getElementById('contactForm').addEventListener('submit', function(event) {
+    //     const form = event.target;
+    //     const inputs = form.querySelectorAll('input[required], textarea[required]');
+    //     let isValid = true;
+        
+    //     inputs.forEach(input => {
+    //         if(!input.value.trim()) {
+    //             input.style.borderColor = '#dc3545';
+    //             isValid = false;
+    //         } else {
+    //             input.style.borderColor = '#e0e0e0';
+    //         }
+    //     });
+        
+    //     if(!isValid) {
+    //         event.preventDefault();
+    //         Swal.fire({
+    //             icon: 'error',
+    //             title: 'Champs manquants',
+    //             text: 'Veuillez remplir tous les champs obligatoires',
+    //         });
+    //     }
+    // });
 
-        const form = document.querySelector("form");
-        if(form){
-            form.addEventListener("submit", function(e) {
-                const inputs = form.querySelectorAll("input[required], textarea[required], select[required]");
-                let valid = true;
-                inputs.forEach(input => {
-                    if(!input.value.trim()) {
-                        valid = false;
-                    }
-                });
+    // document.getElementById('contactForm').addEventListener('submit', function(event) {
+    //     // Empêche l'envoi du formulaire par défaut
+    //     event.preventDefault(); 
 
-                if(!valid){
-                    e.preventDefault();
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Erreur',
-                        text: 'Veuillez remplir tous les champs.',
-                    });
-                }
-            });
-        }
-    });
+    //     const email = document.getElementById('email').value;
+    //     const nom = document.getElementById('nom').value;
+    //     const prenom = document.getElementById('prenom').value;
+    //     const message = document.getElementById('message').value;
+
+    //     // Vérification que tous les champs sont remplis
+    //     if (email && nom && prenom && message) {
+    //         // Envoi du formulaire
+    //         this.submit(); // Envoie le formulaire après la validation
+
+    //         // Affichage d'une alerte de succès
+    //         Swal.fire({
+    //             icon: 'success',
+    //             title: 'Message envoyé',
+    //             text: 'Votre message a bien été envoyé.',
+    //             showConfirmButton: false,
+    //             timer: 1500
+    //         });
+    //     } else {
+    //         // Affichage d'une alerte d'erreur si un champ est manquant
+    //         Swal.fire({
+    //             icon: 'error',
+    //             title: 'Erreur',
+    //             text: 'Veuillez remplir tous les champs.',
+    //         });
+    //     }
+    // });
 </script>
 
 <?php include_once('footer.php'); ?>

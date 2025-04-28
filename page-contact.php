@@ -13,17 +13,7 @@
 </section>
 
 <section class="contactez-nous">
-
-<form action="">
-    <div class="input-group">
-        <input placeholder="Nom" name="nom" id="nom" type="text" required>
-        <input placeholder="Prénom" name="prenom" id="prenom" type="text" required>
-    </div>
-    <input placeholder="E-mail" name="email" id="email" type="email" required>
-    <textarea name="message" id="message" rows="5" placeholder="Message" required></textarea>
-    <button type="submit" class="submit" name="envoyer">Envoyer</button>
-</form>
-
+    <?php echo do_shortcode('[formulaire_contact]'); ?>
 </section>
 
 <section class="informations">
@@ -61,7 +51,7 @@
 
     .hero {
         position: relative;
-        background-image: url('<?php echo get_template_directory_uri(); ?>/assets/images/gers_paysage.jpg');
+        background-image: url('<?php echo get_template_directory_uri(); ?>/assets/images/hero/contact.jpg');
         background-size: cover;
         background-position: center;
         height: 60vh;
@@ -200,6 +190,23 @@
         cursor: pointer;
     }
 
+    .error {
+        border-color: #ff3860 !important;
+    }
+
+    .error-message {
+        color: #ff3860;
+        font-size: 0.8em;
+        margin-top: 0.25rem;
+    }
+
+    /* Style pour le bouton pendant l'envoi */
+    button[disabled] {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+
+
     /* 
     ############################################# 
                       media  
@@ -219,6 +226,12 @@
 
         .contactez-nous {
             padding: 1rem;
+        }
+
+        .informations h2 {
+            text-align: left;
+            margin-bottom: 1rem;
+            font-size: 1.7rem;
         }
 
         .info-grid {

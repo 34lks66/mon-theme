@@ -128,7 +128,10 @@
                         </ul>
                     </div>
                     <div class="bus-image">
-                        --- IMAGE --- 
+                        <!-- --- IMAGE ---  -->
+                        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/bus_interieur/bus_interieur_5.jpg" alt="Bus dentaire">
+                        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/bus_interieur/bus_interieur_1.jpg" alt="Bus dentaire">
+                        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/bus_interieur/bus_interieur_3.jpg" alt="Bus dentaire">
                     </div>
                 </div>
             </div>
@@ -217,7 +220,7 @@
     </div>
 </section>
 <br>
-<section class="stats" style="background-color: #f8f9fa;">
+<!-- <section class="stats" style="background-color: #f8f9fa;">
         <h2 class="section-title">Statistiques</h2>
             <div class="container">
             <div class="stats-grid">
@@ -239,6 +242,51 @@
 
 <section class="t&i">
     <h2 class="section-title">Témoignages & Interviews</h2>
+</section> -->
+
+<section class="impact">
+    <div class="container">
+        <h2 class="section-title">L'impact du Bus Dentaire en chiffres</h2>
+
+        <div class="impact-layout">
+            <!-- Témoignage 1 -->
+             <div class="testimonial-bg" style="background-image: url('<?php echo get_template_directory_uri(); ?>/assets/images/temoignage/temoignage_1.jpeg')">
+                <div class="testimonial-content">
+                    <div class="quote">“</div>
+                    <p class="text">Grâce au Bus Dentaire, j’ai retrouvé confiance et l’envie de prendre soin de ma santé.</p>
+                    <span class="author">Léa, 36 ans – Le Houga</span>
+                </div>
+             </div>
+
+             <div class="stats-wrapper">
+                <div class="stat-card">
+                    <div class="stat-number">+1000</div>
+                    <div class="stat-label">Patients soignés et accompagnés</div>
+                </div>
+                <div class="stat-card highlight">
+                    <div class="stat-number">1250</div>
+                    <div class="stat-label">Actes de soins réalisés</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">14 000</div>
+                    <div class="stat-label">km parcourus sur 9 communes</div>
+                </div>
+                <div class="stat-card highlight">
+                    <div class="stat-number">9</div>
+                    <div class="stat-label">communes rurales isolées</div>
+                </div>    
+             </div>
+
+             <!-- Témoignage 2 -->
+              <div class="testimonial-bg" style="background-image: url('<?php echo get_template_directory_uri(); ?>/assets/images/temoignage/temoignage_2.jpg')">
+                <div class="testimonial-content">
+                    <div class="quote">“</div>
+                    <p class="text">Cette expérience m’a convaincue de m’installer dans le Gers, pour recréer un réseau de soins de proximité.</p>
+                    <span class="author">Manon, 23 ans – <strong>Etudiante en 6e année de dentaire</strong></span>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 
 </div>
@@ -285,7 +333,7 @@
         background-position: center 60% !important;
         min-height: 500px;
         background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
-                    url('<?php echo get_template_directory_uri(); ?>/assets/images/activites.jpg') center/cover no-repeat;
+                    url('<?php echo get_template_directory_uri(); ?>/assets/images/hero/activites.jpg') center/cover no-repeat;
         background-color: var(--blue);
         display: flex;
         align-items: center;
@@ -616,14 +664,35 @@
         text-align: center;
     }
 
-    .image-placeholder {
-        background-color: var(--light-blue);
+    .bus-image {
         border-radius: 8px;
         height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 2rem;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: auto auto;
+        padding: 1rem;
+        gap: 1rem;
+    }
+
+    .bus-image img {
+        width: 100%;
+        height: auto;
+        border-radius: 4px;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .bus-image img:hover {
+        transform: scale(1.02);
+    } 
+
+    .bus-image img:first-child {
+        grid-column: span 2;
+        height: 220px;
+    }
+
+    .bus-image img:nth-child(n+2) {
+        height: 180px;
     }
 
     .team-cards {
@@ -648,7 +717,7 @@
     }
 
     .card-icon {
-        margin: 0 auto 1.5rem;
+        margin: 0 auto 1rem;
         font-size: 2rem;
     }
 
@@ -809,7 +878,7 @@
     #############################################
     */
 
-    .stats {
+    /* .stats {
         padding: 80px 0;
     }
 
@@ -824,8 +893,112 @@
         font-size: 3rem;
         font-weight: 700;
         margin-bottom: 10px;
+    } */
+
+    /* 
+    ############################################# 
+                impact-section  
+    #############################################
+    */
+
+    .impact {
+        background: #f9f9f9;
+        padding: 4rem 0;
     }
 
+    .impact-layout {
+        display: grid;
+        grid-template-areas:
+            "testimonial1 stats"
+            "testimonial2 stats";
+        grid-template-columns: 2fr 1fr;
+        grid-gap: 2rem;
+        margin-top: 2rem;
+    }
+
+    .testimonial-bg {
+        position: relative;
+        background-size: cover;
+        background-position: center;
+        min-height: 300px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        color: white;
+        overflow: hidden;
+    }
+
+    .testimonial-content {
+        position: relative;
+        z-index: 2;
+        max-width: 80%;
+        text-align: left;
+    }
+
+    .testimonial-bg::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4));
+        z-index: 1;
+    }
+
+    .quote {
+        font-size: 4rem;
+        font-weight: bold;
+        line-height: 1;
+        margin-bottom: 1rem;
+        color: white;
+    }
+
+    .text {
+        font-size: 1.3rem;
+        line-height: 1.6;
+        margin-bottom: 1rem;
+    }
+
+    .author {
+        font-size: 1rem;
+        font-style: italic;
+        color: #fff;
+    }
+
+    .stats-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        grid-area: stats;
+    }
+
+    .stat-card {
+        background: white;
+        color: var(--blue);
+        border-radius: 12px;
+        padding: 1.5rem;
+        text-align: center;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        transition: transform 0.3s ease;
+    }
+
+    .stat-card.highlight {
+        background: var(--red);
+        color: white;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .stat-number {
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+        font-size: 1rem;
+    }
 
     /* 
     ############################################# 
@@ -836,7 +1009,22 @@
     @media (max-width: 768px) {
         
         .hero {
-            height: 60vh;
+            height: 50vh;
+            background-size: 120% auto !important;
+            background-position: center 0% !important;
+            min-height: 300px;
+        }
+
+        .hero-content {
+            padding: 0 0;
+        }
+
+        .hero-title {
+            font-size: 1.7rem;
+        }
+
+        .section-title {
+            font-size: 1.35rem;
         }
 
         .presentation-content p {
@@ -847,8 +1035,42 @@
             padding: 1em 4em;  
         }
 
+        .timeline-item h3 {
+            font-size: 1.15rem ; 
+            font-weight: 700; 
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-item p {
+            font-size: 1rem;
+        }
+
+        .container {
+            width: 100%;
+        }
+
+        .bus-title {
+            font-size: 1.2rem;
+        }
+
         .bus-grid {
-            grid-template-columns: 1fr;
+            grid-template-columns: 1fr; 
+        }
+
+        .bus-image {
+            grid-template-columns: 1fr 1fr;
+            padding: 0;
+            gap: 0.8rem;
+        }
+
+        .bus-image img:first-child {    
+            height: 200px;
+            width: 100%;
+        }
+
+        .bus-image img:nth-child(n+2) {
+            height: 170px;
+            width: 100%;
         }
 
         .team-cards {
@@ -859,12 +1081,28 @@
             padding: 1.5rem;
         }
 
+        .operation-header h3 {
+            font-size: 16px;
+        }
+
         .soins-card-row {
             flex-direction: column;
         }
         
         .soins-card {
             margin: 0 0;
+        }
+
+        .impact-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .stats-container {
+            grid-template-columns: 1fr;
+        }
+
+        .evolution-graph {
+            grid-column: span 1;
         }
 
     }
