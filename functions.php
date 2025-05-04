@@ -96,14 +96,35 @@ add_image_size('my_custom_size', 60, 60, true);
 function afficher_logos_partenaires($max = 50) {
     if(!is_page()) return;
     $page_id = get_the_ID();
+
+    echo '<div class="partenaires-container">';
+
+    echo '<div class="partenaires-section institutionnels">';
+    echo '<h3>Nos partenaires institutionnels</h3>';
+    echo '<div class="logos">';
     for($i = 1; $i <= $max; $i++) {
-        $image = get_field("partenaire_$i", $page_id);
+        $image = get_field("partenaire_institutionnel_$i", $page_id);
         if($image && isset($image['url'])){
-            echo '<div class="logo-item">';
+            echo '<div class="logo-item institutionnel">';
             echo '<img src="' . esc_url($image['url']) . '" alt="' . esc_attr($image['alt']) .' ">';
             echo '</div>';
         }
     }
+    echo '</div></div>';
+    
+    echo '<div class="partenaires-section financiers">';
+    echo '<h3>Nos partenaires financiers</h3>';
+    echo '<div class="logos">';
+    for($i = 1; $i <= $max; $i++) {
+        $image = get_field("partenaire_financier_$i", $page_id);
+        if($image && isset($image['url'])){
+            echo '<div class="logo-item financier">';
+            echo '<img src="' . esc_url($image['url']) . '" alt="' . esc_attr($image['alt']) .' ">';
+            echo '</div>';
+        }
+    }
+    echo '</div></div>';
+    echo '</div>';
 }
 
 /* 
@@ -116,7 +137,7 @@ function creer_post_type_lieux() {
     register_post_type('bus_lieu', [
         'label' => 'Lieux Bus Dentaire',
         'public' => true,
-        'menu-icon' => 'dashicons-location',
+        'menu_icon' => 'dashicons-location',
         'supports' => ['title', 'editor', 'thumbnail'],
         'show_in_rest' => true,
     ]);
@@ -134,7 +155,7 @@ function creer_post_type_presse() {
     register_post_type('article_presse', [
         'label' => 'Articles Presse',
         'public' => true, 
-        'menu-icon' => 'dashicons-media-document',
+        'menu_icon' => 'dashicons-welcome-widgets-menus',
         'supports' => ['title', 'thumbnail'],
         'has_archive' => false,
         'show_in_rest' => true, 
@@ -142,6 +163,49 @@ function creer_post_type_presse() {
 }
 
 add_action('init', 'creer_post_type_presse');
+
+/* 
+############################################# 
+            FORMULAIRE DE DON  
+#############################################
+*/
+
+function creer_post_type_donation() {
+    register_post_type('donation', [
+        'labels' => [
+            'name' => 'Dons',
+            'singular_name' => 'Don'
+        ],
+        'public' => true,
+        'show_ui' => true,
+        'capability_type' => 'post',
+        'supports' => ['title', 'custom-fields'],
+        'menu_icon' => 'dashicons-money-alt',
+    ]);
+}
+
+add_action('init', 'creer_post_type_donation'); 
+
+function enregistrer_don_wp($montant, $email, $methode, $infos_extra = []) {
+    $post_id = wp_insert_post([
+        'post_title' => 'Don de' .$montant. '€ - ' .$email,
+        'post_type' => 'donation',
+        'post_status' => 'publish'
+    ]);
+
+    if($post_id) {
+        update_post_meta($post_id, '_don_montant', $montant);
+        update_post_meta($post_id, '_don_email', $email);
+        update_post_meta($post_id, '_don_methode', $methode);
+        update_post_meta($post_id, '_don_date', current_time('mysql'));
+
+        foreach($infos_extra as $key => $value) {
+            update_post_meta($post_id, '_don_' . $key, $value);
+        }
+    }
+
+    return $post_id;
+}
 
 /* 
 ############################################# 
@@ -189,11 +253,15 @@ function afficher_formulaire_rdv() {
                         <option value="Estang">Estang</option>
                         <option value="Le Houga">Le Houga</option>
                         <option value="Valence-sur-Baïse">Valence-sur-Baïse</option>
-                        <option value="Pujaudran">Pujaudran</option>
                         <option value="Castéra-Verduzan">Castéra-Verduzan</option>
                         <option value="Montesquiou">Montesquiou</option>
                         <option value="Miradoux">Miradoux</option>
                         </select>
+                        <?php
+                        $planning_file = get_field('planning');
+                        if($planning_file): ?>
+                            <a href="<?php echo esc_url($planning_file['url']); ?>" class="button-planning" download>voir le planning</a> 
+                        <?php endif; ?>
                     </div>
                     
                     <div class="form-group">
@@ -222,8 +290,8 @@ function afficher_formulaire_rdv() {
                     </div>
                     <div class="contact-hours">
                         <h4>Horaires</h4>
-                        <p>08h00-12h00</p>
-                        <p>13h00-17h00</p>
+                        <p>Lundi matin - vendredi matin de 09h00-12h00</p>
+                        <p>Mardi Mercredi Jeudi de 09h00-12h00 à 13h00-17h00</p>
                     </div>
                 </div>
             </div>
@@ -328,49 +396,6 @@ function traitement_formulaire_contact() {
 
     wp_redirect(add_query_arg('message_envoye', 'contact', wp_get_referer()));
     exit;
-}
-
-/* 
-############################################# 
-            FORMULAIRE DE DON  
-#############################################
-*/
-
-function creer_post_type_donation() {
-    register_post_type('donation', [
-        'labels' => [
-            'name' => 'Dons',
-            'singular_name' => 'Don'
-        ],
-        'public' => true,
-        'show_ui' => true,
-        'capability_type' => 'post',
-        'supports' => ['title', 'custom-fields'],
-        'menu-icon' => 'dashicons-money-alt',
-    ]);
-}
-
-add_action('init', 'creer_post_type_donation'); 
-
-function enregistrer_don_wp($montant, $email, $methode, $infos_extra = []) {
-    $post_id = wp_insert_post([
-        'post_title' => 'Don de' .$montant. '€ - ' .$email,
-        'post_type' => 'donation',
-        'post_status' => 'publish'
-    ]);
-
-    if($post_id) {
-        update_post_meta($post_id, '_don_montant', $montant);
-        update_post_meta($post_id, '_don_email', $email);
-        update_post_meta($post_id, '_don_methode', $methode);
-        update_post_meta($post_id, '_don_date', current_time('mysql'));
-
-        foreach($infos_extra as $key => $value) {
-            update_post_meta($post_id, '_don_' . $key, $value);
-        }
-    }
-
-    return $post_id;
 }
 
 ?>

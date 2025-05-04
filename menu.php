@@ -10,7 +10,7 @@
     </button>
     <ul class="menu" id="menu">
         <li><a href="<?php echo site_url('/'); ?>">Accueil</a></li>
-        <li><a href="<?php echo site_url('/lieux-planning');?>">Prise de rendez-vous</a></li>
+        <li><a href="<?php echo site_url('/prise-de-rendez-vous');?>">Prise de rendez-vous</a></li>
         <!-- <li><a href="#">Témoignages & Interviews</a></li> -->
         <li><a href="<?php echo site_url('/activites'); ?>">Activités</a></li>
         <li class="dropdown">

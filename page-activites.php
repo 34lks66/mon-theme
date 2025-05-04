@@ -165,7 +165,7 @@
                 <h3>Mode de fonctionnement</h3>
             </div>
             <p>Le bus se déplace 2 à 3 fois par semaine principalement les lundis, mardis et mercredis dans 10 communes rurales isolées du Gers</p>
-            <a href="<?php echo site_url('/lieux-planning');?>" class="btn btn-primary">voir le planning</a>
+            <a href="<?php echo site_url('/prise-de-rendez-vous');?>" class="btn btn-primary">voir le planning</a>
         </div>
     </div>
 </section>
@@ -220,33 +220,29 @@
     </div>
 </section>
 <br>
-<!-- <section class="stats" style="background-color: #f8f9fa;">
-        <h2 class="section-title">Statistiques</h2>
-            <div class="container">
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <div class="stat-number" style="color: #e30613;">1000+</div>
-                    <div class="stat-label">Patients soignés et accompagnés</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number" style="color: #0077b6;">10</div>
-                    <div class="stat-label">Communes rurales isolées</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number" style="color: #e30613;">14 000</div>
-                    <div class="stat-label">Kilomètres parcourus</div>
-                </div>
-            </div>
-        </div>
-</section>
-
-<section class="t&i">
-    <h2 class="section-title">Témoignages & Interviews</h2>
-</section> -->
 
 <section class="impact">
     <div class="container">
         <h2 class="section-title">L'impact du Bus Dentaire en chiffres</h2>
+
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-number" style="color: #e30613;">1000+</div>
+                <div class="stat-label">Patients soignés et accompagnés</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" style="color: #0077b6;">9</div>
+                <div class="stat-label">Communes rurales isolées</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" style="color: #e30613;">1250+</div>
+                <div class="stat-label">Actes de soins réalisés</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" style="color: #0077b6;">14 000 km.</div>
+                <div class="stat-label">parcourus sur 9 communes</div>
+            </div>
+        </div>
 
         <div class="impact-layout">
             <!-- Témoignage 1 -->
@@ -256,25 +252,6 @@
                     <p class="text">Grâce au Bus Dentaire, j’ai retrouvé confiance et l’envie de prendre soin de ma santé.</p>
                     <span class="author">Léa, 36 ans – Le Houga</span>
                 </div>
-             </div>
-
-             <div class="stats-wrapper">
-                <div class="stat-card">
-                    <div class="stat-number">+1000</div>
-                    <div class="stat-label">Patients soignés et accompagnés</div>
-                </div>
-                <div class="stat-card highlight">
-                    <div class="stat-number">1250</div>
-                    <div class="stat-label">Actes de soins réalisés</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">14 000</div>
-                    <div class="stat-label">km parcourus sur 9 communes</div>
-                </div>
-                <div class="stat-card highlight">
-                    <div class="stat-number">9</div>
-                    <div class="stat-label">communes rurales isolées</div>
-                </div>    
              </div>
 
              <!-- Témoignage 2 -->
@@ -291,7 +268,6 @@
 
 </div>
 
-<?php include_once('footer.php'); ?>
 <?php get_footer(); ?>
 
 <style>
@@ -333,7 +309,7 @@
         background-position: center 60% !important;
         min-height: 500px;
         background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
-                    url('<?php echo get_template_directory_uri(); ?>/assets/images/hero/activites.jpg') center/cover no-repeat;
+                    url('<?php echo get_template_directory_uri(); ?>/assets/images/hero/activite.jpg') center/cover no-repeat;
         background-color: var(--blue);
         display: flex;
         align-items: center;
@@ -367,6 +343,7 @@
     .hero-subtitle {
         font-size: clamp(1.2rem, 2vw, 1.8rem);
         margin-bottom: 40px;
+        font-weight: 700;
         text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
         line-height: 1.5;
         max-width: 700px;
@@ -878,7 +855,7 @@
     #############################################
     */
 
-    /* .stats {
+    .stats {
         padding: 80px 0;
     }
 
@@ -890,10 +867,14 @@
     }
 
     .stat-number {
-        font-size: 3rem;
-        font-weight: 700;
-        margin-bottom: 10px;
-    } */
+        font-size: 2.8rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+        font-size: 0.9rem;
+    }
 
     /* 
     ############################################# 
@@ -962,42 +943,6 @@
         font-size: 1rem;
         font-style: italic;
         color: #fff;
-    }
-
-    .stats-wrapper {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        grid-area: stats;
-    }
-
-    .stat-card {
-        background: white;
-        color: var(--blue);
-        border-radius: 12px;
-        padding: 1.5rem;
-        text-align: center;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-        transition: transform 0.3s ease;
-    }
-
-    .stat-card.highlight {
-        background: var(--red);
-        color: white;
-    }
-
-    .stat-card:hover {
-        transform: translateY(-5px);
-    }
-
-    .stat-number {
-        font-size: 2rem;
-        font-weight: bold;
-        margin-bottom: 0.5rem;
-    }
-
-    .stat-label {
-        font-size: 1rem;
     }
 
     /* 
@@ -1093,16 +1038,13 @@
             margin: 0 0;
         }
 
-        .impact-grid {
-            grid-template-columns: 1fr;
+        .stat-number {
+            font-size: 2.5rem;
+            margin-bottom: 0.1rem;
         }
 
-        .stats-container {
-            grid-template-columns: 1fr;
-        }
-
-        .evolution-graph {
-            grid-column: span 1;
+        .stat-label {
+            font-size: 1rem;
         }
 
     }

@@ -13,7 +13,6 @@ html, body {
     flex-direction: column;
 }
 
-
 .main-content {
     flex: 1; /* Prend tout l'espace disponible */
 }

@@ -6,13 +6,23 @@
 <div class="content">
 
 <div class="homepage">
-    <section class="hero" style="background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('<?php echo get_template_directory_uri(); ?>/assets/images/hero/index.jpg');">
+    <!-- <section class="hero" style="background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('<?php echo get_template_directory_uri(); ?>/assets/images/hero/index.jpg');">
         <div class="hero-content">
             <h1>Bus Dentaire Gersois</h1>
             <h2>Soins dentaires gratuits sur RDV</h2>
             <div class="hero-buttons">
-                <a href="<?php echo site_url('/lieux-planning');?>" class="btn btn-primary">Prendre RDV</a>
+                <a href="<?php echo site_url('/prise-de-rendez-vous');?>" class="btn btn-primary">Prendre RDV</a>
                 <a href="#lieux" class="btn btn-secondary">Voir les lieux</a>
+            </div>
+        </div>
+    </section> -->
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Bus Dentaire Gersois</h1>
+            <p class="hero-subtitle">Soins dentaires gratuits sur RDV</p>
+            <div class="hero-buttons">
+                <a href="<?php echo site_url('/prise-de-rendez-vous');?>" class="btn btn-primary">Prendre RDV</a>
             </div>
         </div>
     </section>
@@ -36,7 +46,7 @@
                     <div class="service-icon" style="background-color: #0077b6;">
                         <i class="fas fa-teeth-open"></i>
                     </div>
-                    <h3>Soins des dents et des racines</h3>
+                    <h3>Soins des dents et des gencives</h3>
                 </div>
             </div>
         </div>
@@ -51,9 +61,9 @@
     <br><br>
 
     <section class="image">
-        <div class="container">
+        <div class="container-t">
             <h2 class="section-title">Notre Bus Dentaire</h2>
-            <center><p>Le bus dentaire dispose de tout l'équipement nécessaire pour fournir des soins dentaires, allant du simple détartrage à l'extraction des dents. <br>Il est équipé d'un fauteuil dentaire, d'un système de radiologie, des consommables dentaires et de divers instruments spécialisés.</p></center><br>
+            <center><p>Le bus dentaire dispose de tout l'équipement nécessaire pour fournir des soins dentaires, allant du <b>détartrage</b> à <b>l'extraction des dents</b>. <br>Il est équipé d'un fauteuil dentaire, d'un système de radiologie, des consommables dentaires et de divers instruments spécialisés.</p></center><br>
             <div class="image-grid">
                 <img src="<?php echo get_template_directory_uri(); ?>/assets/images/bus_presentation/bus2.jpg" alt="Bus dentaire">
                 <img src="<?php echo get_template_directory_uri(); ?>/assets/images/bus_presentation/bus1.jpg" alt="Bus dentaire">
@@ -135,6 +145,13 @@
         padding: 0 15px;
     }
 
+    .container-t {
+        width: 88%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 15px;
+    }
+
     .section-title {
         text-align: center;
         margin-bottom: 40px;
@@ -153,6 +170,71 @@
     }
 
     .hero {
+        position: relative;
+        height: 80vh;
+        background-size: 100% auto !important;
+        background-position: center 60% !important;
+        min-height: 500px;
+        background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
+                    url('<?php echo get_template_directory_uri(); ?>/assets/images/hero/accueil.jpg') center/cover no-repeat;
+        background-color: var(--blue);
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        text-align: center;
+        color: white;
+        padding: 20px; 
+        overflow: hidden;
+        animation: fadeIn 1.5s ease-out;
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        max-width: 800px;
+        padding: 0 20px;
+        transform: translateY(20px);
+        opacity: 0;
+        animation: slideUp 1s ease-out 0.5s forwards;
+    }
+
+    .hero-title {
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        margin-bottom: 10px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
+        line-height: 1.2;
+    }
+    
+    .hero-subtitle {
+        font-size: clamp(1.2rem, 2vw, 1.8rem);
+        margin-bottom: 190px;
+        font-weight: 700;
+        text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
+        line-height: 1.5;
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    @keyframes slideUp {
+        from { 
+            transform: translateY(20px);
+            opacity: 0;
+        }
+        to { 
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    /* .hero {
         height: 70vh;
         background-size: 100% auto !important;
         background-position: center !important;
@@ -174,7 +256,7 @@
         font-size: 1.8rem;
         margin-bottom: 30px;
         text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-    }
+    } */
 
     .btn {
         display: inline-block;
@@ -375,7 +457,7 @@
     }
     
     @media (max-width: 768px) {
-        .hero {
+        /* .hero {
             height: 60vh;
         }
 
@@ -386,6 +468,26 @@
         .hero-content h2 {
             font-size: 1.4rem;
             margin-bottom: 45px;
+        } */
+
+        .hero {
+            height: 50vh;
+            background-size: 120% auto !important;
+            background-position: center 0% !important;
+            min-height: 300px;
+        }
+
+        .hero-content {
+            padding: 0 0;
+        }
+
+        .hero-title {
+            font-size: 1.7rem;
+            margin-bottom: 20px;
+        }
+
+        .hero-subtitle {
+            margin-bottom: 150px;
         }
         
         .hero-buttons {
@@ -434,15 +536,6 @@
 
 <script>
     document.querySelector('.btn-secondary').addEventListener('click', function(e) {
-        e.preventDefault();
-        const targetId = this.getAttribute('href');
-        const targetElement = document.querySelector(targetId);
-        targetElement.scrollIntoView({
-            behavior: 'smooth'
-        });
-    });
-
-    document.querySelector('.btn-primary').addEventListener('click', function(e) {
         e.preventDefault();
         const targetId = this.getAttribute('href');
         const targetElement = document.querySelector(targetId);

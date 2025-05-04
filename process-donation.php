@@ -1,6 +1,11 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+require_once($_SERVER['DOCUMENT_ROOT'] . '/wordpress/wp-load.php');
+
 require_once 'vendor/autoload.php'; 
-require_once($_SERVER['DOCUMENT_ROOT'] . '/wp-config.php'); // Pour accéder aux constantes WP
 
 // Clé Stripe depuis wp-config.php
 \Stripe\Stripe::setApiKey(defined('STRIPE_SECRET_KEY') ? STRIPE_SECRET_KEY : '');
@@ -34,7 +39,7 @@ try {
             ]
         ]);
 
-        enregister_don_wp($amount/100, $email, 'stripe', [
+        enregistrer_don_wp($amount/100, $email, 'stripe', [
             'payment_intent_id' => $paymentIntent->id,
             'status' => 'pending'
         ]);
@@ -50,3 +55,4 @@ try {
     http_response_code(500);
     echo json_encode(['error' => $e->getMessage()]);
 }
+?>

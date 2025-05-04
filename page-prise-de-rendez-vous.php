@@ -1,6 +1,5 @@
 <?php get_header();?>
 
-<?php require_once('header.php'); ?>
 <?php require_once('head.php'); ?>
 <?php require_once('menu.php'); ?>
 
@@ -14,15 +13,14 @@
             'posts_per_page' => -1
         ]);
     
-            while ($query->have_posts()) : $query->the_post();
-                $image = get_field('photos_villes');
-                if (is_array($image)) {
-                    $image = $image['url'];
-                }
-                $date = get_field('date_passage');
-                $heure = get_field('heure_passage');
-                $adresse = get_field('adresse_passage');
-                // $image = get_the_post_thumbnail_url(get_the_ID(), 'large');
+        while ($query->have_posts()) : $query->the_post();
+            $image = get_field('photos_villes');
+            if (is_array($image)) {
+                $image = $image['url'];
+            }
+            $date = get_field('date_passage');
+            $heure = get_field('heure_passage');
+            $adresse = get_field('adresse_passage');
         ?>
         
         <article class="card">
@@ -37,12 +35,12 @@
                     <p class="card_description">
                         Retrouvez nous à <?= get_the_title();?><br>
                         le <b><?= esc_html($date); ?></b><br> 
-                        <!-- de <?= esc_html($heure); ?><br> -->
                         de 9h à 12h et de 13h30 à 17h <br>
                         <i class="fa-solid fa-location-dot"></i> : <b><?= esc_html($adresse); ?></b>.
                     </p>
                 </div>
-                <button class="card_button">Prendre rendez-vous</button>
+                <!-- <button class="card_button">Prendre rendez-vous</button> -->
+                <a href="#rdv" class="card_button">Prendre rendez-vous</a>
             </div>
         </article>
         <?php endwhile; wp_reset_postdata(); ?>
@@ -60,7 +58,6 @@
     <?php include('carte.php'); ?>
     <br>
     <?php
-    $planning_page = get_page_by_title('Lieux&Planning');
     $planning_file = get_field('planning');
     if($planning_file): ?>
     <p style="text-align: center; margin: 1em 0;">
@@ -286,6 +283,7 @@
         font-family: var(--font-title);
         font-size: 1.1rem;
         color: var(--black);
+        text-decoration: none;
     }
 
     .card_button:focus {
@@ -301,7 +299,7 @@
         font-weight: bold;
         border-radius: 0.60em;
         border: none;
-        background-color: var(--blue);
+        background-color: var(--red);
         font-size: 1.1rem;
         color: white;
         text-decoration: none;
@@ -505,6 +503,25 @@
         cursor: not-allowed;
     }
 
+    .button-planning {
+        display: inline-block;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 30px;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        background-color: var(--red);
+        color: white;
+    }
+
+    .button-planning:hover {
+        background-color: #c0050f;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(227, 6, 19, 0.3);
+    }
+
     /* 
     ############################################# 
                         media  
@@ -622,6 +639,14 @@
         startAutoSlide();
     });
 
+    document.querySelector('.card_button').addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        const targetElement = document.querySelector(targetId);
+        targetElement.scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
 
     // document.getElementById('contactForm').addEventListener('submit', function(event) {
     //     const form = event.target;

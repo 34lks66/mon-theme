@@ -110,8 +110,9 @@ document.addEventListener("DOMContentLoaded", function() {
             var offsetX = 0; // Offset horizontal par défaut
 
             // Ajustement vertical
-            if (markerScreenPos.y < (mapSize.y * 0.3)) {
+            if (markerScreenPos.y < (mapSize.y * 0.4)) {
                 offsetY = 170; // S'ouvre vers le bas si près du haut
+                //offsetY = 300; 
             }
 
             // Ajustement horizontal

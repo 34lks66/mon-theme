@@ -1,4 +1,5 @@
 <?php get_header();?>
+<?php require_once('C:/xampp/htdocs/wordpress/wp-load.php');?>
 
 <div class="content">
 
@@ -428,6 +429,9 @@
     */
 
     @media (max-width: 768px) {
+        .section-title {
+            font-size: 1.8rem;
+        }
 
         .don-title p {
             font-size: 1.1rem; 
@@ -461,54 +465,95 @@
 <script src="https://js.stripe.com/v3/"></script>
 <script>
 
-    const stripe = Stripe('<?php echo STRIPE_PUBLIC_KEY; ?>');
-    const elements = stripe.elements();
-    const card = elements.create('card');
-    card.mount('#card-element');
+    /* 
+    ############################################# 
+                       STRIPE  
+    #############################################
+    */
+    document.addEventListener("DOMContentLoaded", function () {
 
-    // document.querySelector('.submit-btn').addEventListener('click', function() {
-    document.getElementById('payment-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const amount = document.querySelector('.amount-btn.active-amount')?.textContent || document.getElementById('otherInputOne').value;
-        const email = document.querySelector('input[type="email"]').value;
-        const method = document.querySelector('.method-icon.selected').textContent.includes("PayPal") ? 'paypal' : 'stripe';
+        // Initialisation Stripe
+        const stripe = Stripe('<?php echo STRIPE_PUBLIC_KEY; ?>');
+        const elements = stripe.elements();
+        const card = elements.create('card');
+        card.mount('#card-element');
 
-        fetch('process-donation.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                amount: parseFloat(amount),
-                email: email,
-                paymentMethod: method
+        // Gestion des erreurs sur la carte
+        card.on('change', function (event) {
+            const displayError = document.getElementById("card-errors");
+            displayError.textContent = event.error ? event.error.message : '';
+        });
+
+        // Soumission du formulaire 
+        const form = document.getElementById('payment-form');
+        form.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                let amount = document.querySelector('.amount-btn.active-amount')?.textContent.replace('€', '').trim() || 
+                            document.getElementById('otherInputOne').value;
+
+                if (!amount || isNaN(amount) || parseFloat(amount) <= 0) {
+                    alert("Veuillez sélectionner ou saisir un montant valide.");
+                    return;
+                }
+
+                const email = document.querySelector('input[type="email"]').value;
+                const prenom = document.querySelector('input[name="prenom"]').value;
+                const nom = document.querySelector('input[name="nom"]').value;
+                const method = document.querySelector('.method-icon.selected').textContent.includes("PayPal") ? 'paypal' : 'stripe';
+
+                fetch('<?php echo get_template_directory_uri(); ?>/process-donation.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        amount: parseFloat(amount),
+                        email: email,
+                        paymentMethod: method
+                })
             })
-        })
-        .then(res => res.json())
-        .then(data => {
-            if(data.clientSecret) {
-                stripe.confirmCardPayment(data.clientSecret, {
-                    payment_method: {
-                        card: card,
-                        billing_details: {
-                            name: document.querySelector('input[name="nom"]').value + ' ' + document.querySelector('input[name="prenom"]').value,
-                            email: email
+            .then(async res => {
+                const text = await res.text();
+                try {
+                    return JSON.parse(text);
+                } catch (err) {
+                    throw new Error("Réponse non JSON : " + text);
+                }
+            })
+            .then(data => {
+                if (data.clientSecret) {
+                    stripe.confirmCardPayment(data.clientSecret, {
+                        payment_method: {
+                            card: card,
+                            billing_details: {
+                                name: `${prenom} ${nom}`, 
+                                email: email
+                            }
                         }
-                    }
-                }).then(function(result){
-                    if(result.error) {
-                        alert("Erreur de paiement: " + result.error.message);
-                    } else {
-                        if(result.paymentIntent.status === 'succeeded') {
-                            window.location.href = '/merci';
+                    }).then(function (result){
+                        if (result.error) {
+                            alert("Erreur de paiement : " + result.error.message);
+                        } else if (result.paymentIntent.status === 'succeeded') {
+                                window.location.href = '/merci';
                         }
-                    }
-                });
-            } else if(data.redirectUrl) {
-                window.location.href = data.redirectUrl;
-            } 
+                    });
+                } else if (data.redirectUrl) {
+                    window.location.href = data.redirectUrl;
+                } else {
+                    alert("Erreur serveur : aucune réponse valide");
+                }
+            })
+            .catch(err => {
+                console.error("Erreur fetch :", err);
+                alert("Une erreur est survenue. Veuillez réessayer.");
+            });            
         });
     });
+
+    /* 
+    ############################################# 
+                   STYLE ANIMATION  
+    #############################################
+    */
 
     function toggleTab(button, method) {
         const tabs = document.querySelectorAll('.tab');
@@ -599,41 +644,5 @@
             cbForm.style.display = 'none';
         }
     }
-
-    document.addEventListener("DOMContentLoaded", function() {
-        const stripe = Stripe('<?php echo STRIPE_PUBLIC_KEY;?>');
-        const elements = stripe.elements();
-        const card = elements.create('card');
-        card.mount('#card-element');
-
-        const form = document.getElementById('payment-form');
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            stripe.createToken(card).then(function(result) {
-                if(result.error) {
-                    document.getElementById('card-errors').textContent = result.error.message;
-                } else {
-                    fetch('<?php echo admin_url("admin-ajax.php"); ?>', {
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                        body: new URLSearchParams({
-                            action: 'process_donation',
-                            stripeToken: result.token.id,
-                            montant: montantChoisi, 
-                            email: emailUtilisateur
-                        })
-                    })
-                    .then(r => r.json())
-                    .then(response => {
-                        if(response.success) {
-                            alert("Don reçu, merci !");
-                        } else {
-                            alert("Erreur: " + response.data.message);
-                        }
-                    });
-                }
-            });
-        });
-    });
 
 </script>   
