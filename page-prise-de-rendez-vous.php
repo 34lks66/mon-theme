@@ -19,7 +19,6 @@
                 $image = $image['url'];
             }
             $date = get_field('date_passage');
-            $heure = get_field('heure_passage');
             $adresse = get_field('adresse_passage');
         ?>
         

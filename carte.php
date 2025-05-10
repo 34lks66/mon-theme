@@ -2,6 +2,7 @@
 <div id="map" class="map-container"></div>
 
 <script>
+// Initialisation de la carte 
 document.addEventListener("DOMContentLoaded", function() {
     var map = L.map('map', {
         dragging: false,
@@ -13,12 +14,14 @@ document.addEventListener("DOMContentLoaded", function() {
         touchZoom: false
     }).setView([43.70, 0.46], 9);
 
+    // fond de carte
     L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> & Carto',
         subdomains: 'abcd',
         maxZoom: 19
     }).addTo(map);
 
+    // Affichage des contours du Gers
     fetch('https://raw.githubusercontent.com/gregoiredavid/france-geojson/master/departements/32-gers/departement-32-gers.geojson')
         .then(response => response.json())
         .then(data => {
@@ -67,6 +70,7 @@ document.addEventListener("DOMContentLoaded", function() {
     ajusterTailleMap();
     window.addEventListener('resize', ajusterTailleMap);
 
+    // Listes des communes desservies par le bus dentaire
     var villes = [
         { nom: "La Romieu", lat: 43.981, lon: 0.497, id: 1},
         { nom: "Simorre", lat: 43.451, lon: 0.735, id: 2},
@@ -87,6 +91,7 @@ document.addEventListener("DOMContentLoaded", function() {
         popupAnchor: [0, -32]
     });
 
+    // Ajout des marqueurs pour chaque ville
     villes.forEach(ville => {
         var marker = L.marker([ville.lat, ville.lon], {icon: busIcon}).addTo(map);
 
@@ -99,7 +104,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
         marker.on('click', function (e) {
             map.closePopup();
-            // customPopup.setContent('<p>Chargement...</p>');
 
             // Calcul de la position du marqueur en pixels
             var markerScreenPos = map.latLngToContainerPoint(marker.getLatLng());

@@ -581,21 +581,6 @@
         const otherInputMonth = document.getElementById('otherInputMonth');
         const coutInfo = document.getElementById('text-cout-info');
 
-        function sendMontant(montant) {
-            fetch("<?php echo get_template_directory_uri(); ?>/don-calcul.php", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded" 
-                },
-                body: "montant=" + montant
-            })
-            .then(response => response.json())
-            .then(data => {
-                coutInfo.innerHTML = `Votre don de <strong class="red">${data.montant} €</strong>, ne vous coûte que <strong class="green">${data.cout_reel} €</strong> après réduction d'impôts de 66%.`;
-                coutInfo.style.display = 'block';
-            });
-        }
-
         don_buttons.forEach(button => {
             button.addEventListener('click', () => {
                 don_buttons.forEach(btn => btn.classList.remove('active-amount'));

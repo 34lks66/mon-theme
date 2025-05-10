@@ -1,5 +1,3 @@
-<?php require_once('head.php'); ?>
-
 <footer class="footer">
     <div class="footer-content">
         <div class="contact">
@@ -11,20 +9,21 @@
         <div class="legal">
             <h3>Informations légales</h3>
             <ul>
-                <li><a href="#">Mentions légales</a></li>
+                <li><a href="<?php echo site_url('/mentions-legales');?>">Mentions légales</a></li>
                 <li><a href="#">Conditions d'utilisation</a></li>
-                <li><a href="#">Politique de confidentialité</a></li>
+                <li><a href="<?php echo site_url('/politique-de-confidentialite');?>">Politique de confidentialité</a></li>
             </ul>
         </div>
         <div class="social-media">
             <h3>Suivez-nous</h3>
             <div class="footer_social_area">
-                <a href="#" data-toggle="tooltip" data-placement="top" title="Facebook"><i class="fab fa-facebook"></i></a>
+                <a href="https://www.facebook.com/profile.php?id=61574635529930" data-toggle="tooltip" data-placement="top" title="Facebook"><i class="fab fa-facebook"></i></a>
                 <a href="#" data-toggle="tooltip" data-placement="top" title="Instagram"><i class="fab fa-instagram"></i></a>
                 <a href="#" data-toggle="tooltip" data-placement="top" title="Twitter"><i class="fab fa-twitter"></i></a>
             </div>
         </div>
     </div>
+    <?php wp_footer(); ?>
 </footer>
 
 <style>

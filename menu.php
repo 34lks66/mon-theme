@@ -1,8 +1,10 @@
 <nav class="navbar">
     <div class="logo">
+        <a href="<?php echo site_url('/'); ?>">
          <img src="<?php echo get_template_directory_uri(); ?>/assets/images/LOGO_CROIX_ROUGE_2.png" alt="Logo">
-
+        </a>
     </div>
+
     <button class="menu-toggle" aria-label="Toggle menu">
         <span class="bar"></span>
         <span class="bar"></span>
