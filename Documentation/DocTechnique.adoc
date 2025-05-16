@@ -16,8 +16,8 @@
 |===
 | Équipe |
 
-| Chef de Projet | LM
-| Administrateur | AO
+| Développeur | Mucahit Lekesiz
+| Administrateur | Alexandre Oberdorf
 
 |===
 
