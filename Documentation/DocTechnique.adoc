@@ -90,7 +90,13 @@ xampp/htdocs/wordpress/wp-content/themes
 
 === 2. Technologies utilisés
 
-WordPress.... 
+Utilisation de WordPress comme système de gestion de contenu (CMS) pour faciliter l'administration du site.
+
+Le développement s’est réalisé en utilisant plusieurs outils : 
+- Environnement local : XAMPP
+- CMS : WordPress
+- Thème personnalisé : PHP, HTML, CSS, JS (Visual Studio Code)
+- Base de données : MySQL (via phpMyAdmin)
 
 == III. Rôle de Chaque Fichier 
 
