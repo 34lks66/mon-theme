@@ -1,0 +1,1066 @@
+= Documentation Technique 
+:toc:
+:toc-title: Sommaire
+
+[cols="2*"]
+|===
+| Projet | Développement d'un site web pour le projet du Bus Dentaire Gersois
+
+| Client | Croix-Rouge du Gers & Bus Dentaire Gersois
+
+| Date | Mai 2025
+
+|===
+|===
+| Équipe |
+
+| Chef de Projet | LM
+| Administrateur | AO
+
+|===
+
+
+== I. Présentation Rapide du Site Web
+
+=== 1. Contexte
+
+Avec l'accès aux soins de plus en plus difficile en zones rurales, la Croix-Rouge du Gers a mis en place le projet "Bus Dentaire Gersois". Il s'agit d'un cabinet dentaire mobile qui se déplace dans les communes isolées du Gers. Le site web réalisé permet de promouvoir ce projet, de le rendre accessible et de faciliter la prise de contact ou de rendez-vous pour les habitants.
+
+=== 2. Objectifs
+
+Le site web doit permettre :
+
+* Visualier les lieux d'intervention via une carte interactive
+* Consulter le planning des consultations
+* Prendre un rendez-vous à partir d'un formulaire de rendez-vous
+* Présenter les lieux d'intervention et le planning des consultations
+* Visualuser les articles de presse
+* Visualiser les partenaires financiers et institutionnels
+* Accéder aux informations de contact et documents légaux
+
+Utilisateurs principaux :
+
+* Patients : pour consulter les lieux, les dates et prendre un rendez-vous
+* Membres de l'équipe : pour mettre à jour les informations de manière simple
+* Partenaires ou potentiels sponsors : pour voir l'impact du projet et les moyens de le soutenir
+* Dentistes et étudiants : dentistes et étudiants en dentaire intéressés par le projet ou souhaitant s'installer dans le Gers.
+
+== II. Architecture
+
+=== 1. Architecture Générale
+
+Le site repose sur un thème WordPress personnalisé
+
+Le thème contient :
+
+* Des fichiers de structure de WordPress (index.php, functions.php, header.php...)
+
+* Des pages personnalisées (prise de rendez-vous, activités, contact...)
+
+* Des Custom Post Types (CPT) pour gérer les villes desservies, les lieux de passage, les partenaires, les articles de presse...
+
+* Des groupes de champs personnalisés ACF (Advanced Custom Fields)
+
+Voici l'arborecence : 
+
+[source, text]
+----
+xampp/htdocs/wordpress/wp-content/themes
+|-- mon-theme
+|   |-- assets/images
+|   |   |-- bus_interieur
+|   |   |-- bus_presentation
+|   |   |-- hero
+|   |   |-- temoignage
+|   |   |-- bus_icon.png
+|   |-- carte.php
+|   |-- footer.php
+|   |-- functions.php
+|   |-- head.php
+|   |-- header.php
+|   |-- menu.php
+|   |-- page-activites.php
+|   |-- page-comment-nous-soutenir.php
+|   |-- page-contact.php
+|   |-- page-mentions-legales.php
+|   |-- page-politique-de-confidentialite.php
+|   |-- page-prise-de-rendez-vous.php
+|   |-- style.css
+----
+
+=== 2. Technologies utilisés
+
+WordPress.... 
+
+== III. Rôle de Chaque Fichier 
+
+* `index.php` : page d'accueil, contenant la présentation du projet en vif, la carte interactive, quelques photos du Bus Dentaire et les articles de presse
+* `functions.php` : déclaration des CPT et ACF.
+* `header.php / footer.php / head.php / menu.php` : fichiers de structure gérant le layout global
+* `style.css` : feuille de style principale
+* `page-prise-de-rendez-vous.php` : gère l'affichage des lieux de passage, du téléchargement du planning et le formulaire de RDV
+* `page-activites.php` : affiche une présentation détaillé (impact, chiffres clés, témoignagnes, équipe....) du projet du Bus Dentaire
+* `page-comment-nous-soutenir.php` : affiche les informations concernant les partenaires et les logos des partenaires
+* `page-contact.php` : formulaire de contact et informations de contact
+* `carte.php` : intègre la carte interactive Leaflet.js 
+
+== IV. Fonctionnalités
+
+== 1. Gestion des lieux de passage du Bus Dentaire
+
+==== Description
+Cette fonctionnalité permet de gérer les différentes lieux de passage du Bus Dentaire. Chaque lieu de passage est représenté sous forme de carte contenant une image représentative de la ville, la date de passage, et le lieu de stationnement du Bus Dentaire. Ces informations sont saisies depuis l'interface d'administration WordPress dans un Custom Post Type dédié, avec des champs ACF personnalisés. Elles sont ensuite affichées automatiquement dans la page de prise de rendez-vous.
+
+==== Scénarios éventuels
+
+1. L'administrateur se connecte à l'interface administrateur de WordPress 
+
+2. Il selectionne "Lieux Bus Dentaire" dans le menu
+
+3. Il clique sur une commune (ou en ajoute une nouvelle) puis se rend dans la section "Lieux Passages" et remplit les champs ACF (photos_villes, date_passage, adresse_passage)
+
+4. Il valide en cliquant sur "Enregistrer"
+
+==== Fichier Impliquées
+* functions.php - Déclaration du CPT 
+* page-prise-de-rendez-vous.php - Affichage frontend des cartes
+
+==== Extrait de Code Significatif
+
+Déclaration du CPT : 
+[source, php]
+----
+function creer_post_type_lieux() {
+    register_post_type('bus_lieu', [
+        'label' => 'Lieux Bus Dentaire',
+        'public' => true,
+        'menu_icon' => 'dashicons-location',
+        'supports' => ['title', 'editor', 'thumbnail'],
+        'show_in_rest' => true,
+    ]);
+}
+add_action('init', 'creer_post_type_lieux');
+----
+La fonction creer_post_type_lieux() permet de créer un nouveau type de contenu dans WordPress, nommé Lieux Bus Dentaire, qui sera utilisé pour afficher les différentes villes desservies.
+
+Aaffichage frontend dans page-prise-de-rendez-vous.php : 
+[source, php]
+----
+<section class="lieux">
+    <div class="lieux-slider" id="slider">
+        <?php 
+        $query = new WP_Query([
+            'post_type' => 'bus_lieu',
+            'posts_per_page' => -1
+        ]);
+    
+        while ($query->have_posts()) : $query->the_post();
+            $image = get_field('photos_villes');
+            if (is_array($image)) {
+                $image = $image['url'];
+            }
+            $date = get_field('date_passage');
+            $adresse = get_field('adresse_passage');
+        ?>
+        
+        <article class="card">
+            <?php if($image): ?>
+                <img class="card_background" src="<?= esc_url($image);?>" alt="<?= get_the_title();?>">
+            <?php else: ?>
+                <div class="card_background" style="background: #ccc;"></div>
+            <?php endif; ?>
+            <div class="card_content | flow">
+                <div class="card_content--container | flow">
+                    <h2 class="card_title"><?= get_the_title(); ?></h2>
+                    <p class="card_description">
+                        Retrouvez nous à <?= get_the_title();?><br>
+                        le <b><?= esc_html($date); ?></b><br> 
+                        de 9h à 12h et de 13h30 à 17h <br>
+                        <i class="fa-solid fa-location-dot"></i> : <b><?= esc_html($adresse); ?></b>.
+                    </p>
+                </div>
+                <a href="#rdv" class="card_button">Prendre rendez-vous</a>
+            </div>
+        </article>
+        <?php endwhile; wp_reset_postdata(); ?>
+    </div>
+
+    <button id="prevSlide" class="slider-nav slider-nav--prev" aria-label="Précédent">&#10094;</button>
+    <button id="nextSlide" class="slider-nav slider-nav--next" aria-label="Suivant">&#10095;</button>
+</section>
+----
+On commence par récupérer tous les lieux enregistrés, sans limite de nombre (posts_per_page => -1),
+La fonction get_field() récupèrent les données saisies dans l’interface ACF pour chaque lieu.
+On utilise esc_html() et esc_url() pour sécuriser les données affichées et éviter les failles XSS.
+Les boutons "précédent" et "suivant" sont utilisé pour animer un slider des lieux à l'aide de JavaScript : 
+
+Script du Slider : 
+[source, JavaScript] 
+----
+document.addEventListener('DOMContentLoaded', function() {
+        const slider = document.getElementById('slider');
+        const prevButton = document.getElementById('prevSlide');
+        const nextButton = document.getElementById('nextSlide');
+        const cards = document.querySelectorAll('.card');
+        const cardWidth = cards[0]?.offsetWidth + 20;
+
+        if (!slider || !prevButton || !nextButton || cards.length === 0) return;
+
+        let autoSlideInterval;
+        let isScrolling = false;
+        let direction = 1;
+
+        function scrollSlider(offset) {
+            isScrolling = true; 
+            slider.scrollBy({
+                left: offset, 
+                behavior: 'smooth'
+            });
+
+            clearInterval(autoSlideInterval);
+            setTimeout(() => {
+               isScrolling = false;
+               startAutoSlide(); 
+            }, 1000);
+        }
+
+        function autoSlide() {
+            if(isScrolling) return;
+
+            const atStart = slider.scrollLeft <= 0;
+            const atEnd = slider.scrollLeft >= slider.scrollWidth - slider.clientWidth - 1;
+
+            if(atEnd) {
+                direction = -1;
+            } else if(atStart){
+                direction = 1;
+            }
+
+            scrollSlider(cardWidth * direction);
+        }
+
+        function startAutoSlide() {
+            autoSlideInterval = setInterval(autoSlide, 4000);
+        }
+
+        prevButton.addEventListener('click', () => {
+            scrollSlider(-cardWidth);
+        });
+
+        nextButton.addEventListener('click', () => {
+            scrollSlider(cardWidth);
+        });
+
+        slider.addEventListener('mouseenter', () => {
+            clearInterval(autoSlideInterval);
+        });
+
+        slider.addEventListener('mouseleave', startAutoSlide);
+
+        startAutoSlide();
+    });
+
+    document.querySelector('.card_button').addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        const targetElement = document.querySelector(targetId);
+        targetElement.scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
+----
+Ce script :
+* Crée un slider horizontal pour faire défiler les cartes
+* Active un défilement automatique toutes les 4 secondes
+* Interrompt le défilement au survol
+* Permet un contrôle manuel via les boutons "précédent / suivant"
+
+== 2. Carte interactive des villes desservies
+
+==== Description
+Cette fonctionalité permet de visualiser toutes les communes desservies par le Bus Dentaire à partir d'une carte interactive présente sur la page d'accueil et la page de prise de rendez-vous. Elle est réalisée avec Leaflet.js et affiche des marqueurs avec l'icône du Bus Dentaire pour chaque ville. Lorsqu'on clique sur un marqueur, une popup s'ouvre avec des informations détaillées : planning de passage, photo, et description de la ville. Ces informations sont saisies depuis l'interface d'administration WordPress dans un Custom Post Type dédié, avec des champs ACF personnalisés.
+
+==== Scénarios éventuels
+
+1. L'administrateur se connecte à l'interface administrateur de WordPress 
+
+2. Il selectionne "Villes Desservies" dans le menu
+
+3. Il clique sur une commune puis se rend dans la section "Informations des villes" et remplit les champs ACF (Ville associée, Planning, image_01)
+
+4. Il valide en cliquant sur "Enregistrer"
+
+==== Fichier Impliquées
+* carte.php - intégration Leaflet.js & carte
+* functions.php - déclaration du CPT & fonction AJAX
+* index.php - inclusion de carte.php
+* page-prise-de-rendez-vous.php - inclusion de carte.php
+
+==== Extrait de Code Significatif
+
+Déclaration du CPT : 
+[source, php]
+----
+function creer_post_type_villes() {
+    register_post_type('villes_desservies',
+        array(
+            'labels' => array(
+                'name' => __('Villes Desservies'),
+                'singular_name' => __('Ville')
+            ),
+            'public' => true,
+            'has_archive' => false,
+            'supports' => array('title', 'editor', 'thumbnail', 'custom-fields'),
+            'menu_icon' => 'dashicons-location'
+        )
+    );
+}
+add_action('init', 'creer_post_type_villes');
+----
+La fonction creer_post_type_villes() permet de créer un nouveau type de contenu dans WordPress, qui sera utilisé pour stocker les informations liées aux communes où le bus intervient.
+
+Fonction AJAX pour afficher les informations dans la popup : 
+[source, php]
+----
+function get_ville_info() {
+    $ville_nom = sanitize_text_field($_GET['ville_nom']);
+    $args = array(
+        'post_type' => 'villes_desservies',
+        'title' => $ville_nom,
+        'posts_per_page' => 1
+    );
+    $query = new WP_Query($args);
+
+    if($query->have_posts()){
+        $query->the_post();
+        $ville_id = get_the_ID();
+        $planning = get_field('planning', $ville_id);
+        $image = get_field('image_01', $ville_id);
+
+        $output = '<div class="popup-container">';
+
+        if($image && isset($image['sizes']['medium'])){
+            $output .= '<div class="popup-image-container" style="opacity:0; transform:translateY(20px)">';
+            $output .= '<img src="'. esc_url($image['sizes']['medium']) .'" alt="'. esc_attr(get_the_title()) .'" class="popup-image">';
+            $output .= '</div>';
+        }
+
+        $output .= '<div class="popup-content">';
+        $output .= '<h3 class="popup-title">' . esc_html(get_the_title()) . '</h3>';
+
+        if($planning){
+            $output .= '<div class="popup-section" style="opacity:0; transform:translateY(20px)">';
+            $output .= '<h4 class="popup-subtitle">Planning : </h4>';
+            $output .= '<div class="popup-text">' . nl2br(esc_html($planning)) . '</div>';
+            $output .= '</div>';
+        } else {
+            $output .= '<div class="popup-section" style="opacity:0; transform:translateY(20px)">';
+            $output .= '<p class="popup-text">Planning non défini.</p>';
+            $output .= '</div>';
+        }
+
+        $output .= '</div></div>';
+        echo $output;
+
+    } else {
+        echo '<div class="popup-error">Aucune information disponible</div>';
+    }
+
+    wp_reset_postdata();
+    die();
+}
+
+add_action('wp_ajax_get_ville_info', 'get_ville_info');
+add_action('wp_ajax_nopriv_get_ville_info', 'get_ville_info');
+----
+La fonction get_ville_info() permet de récupérer le nom de la ville via l'URL AJAX (GET), puis effectuer une requête WP_Query pour retrouver le post correspondant.
+On utilise toujours la fonction get_field pour extraire les champs personnalisés ACF afin d'afficher l'image associée à la ville, le titre de la commune et le planning dans la popup.
+On utilise esc_html() pour sécuriser les données affichées et éviter les failles XSS et on utilise nl2br() pour respecter les sauts de ligne du texte saisi dans l'admin.
+
+Carte interactive avec Leaflet.js : 
+[source, JavaScript]
+----
+<script>
+// Initialisation de la carte 
+document.addEventListener("DOMContentLoaded", function() {
+    var map = L.map('map', {
+        dragging: false,
+        scrollWheelZoom: false,
+        doubleClickZoom: false,
+        boxZoom: false,
+        keyboard: false,
+        trackResize: false,
+        touchZoom: false
+    }).setView([43.70, 0.46], 9);
+
+    // fond de carte
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> & Carto',
+        subdomains: 'abcd',
+        maxZoom: 19
+    }).addTo(map);
+
+    // Affichage des contours du Gers
+    fetch('https://raw.githubusercontent.com/gregoiredavid/france-geojson/master/departements/32-gers/departement-32-gers.geojson')
+        .then(response => response.json())
+        .then(data => {
+            var gersBoundary = L.geoJSON(data, {
+                style: { color: '#e30613', weight: 2, fillOpacity: 0 }
+            }).addTo(map);
+            map.fitBounds(gersBoundary.getBounds());
+
+            var outer = turf.polygon([[
+                [-10, 60], [40, 60], [40, 30], [-10, 30], [-10, 60]
+            ]]);
+            var mask = turf.difference(outer, data);
+            L.geoJSON(mask, {
+                style: { fillColor: 'rgba(0,0,0,0.4)', color: 'none', fillOpacity: 0.8 }
+            }).addTo(map);
+        });
+
+    var popupStyle = {
+        minWidth: 350,
+        maxWidth: 400,
+        className: 'custom-popup'
+    };
+
+    function ajusterTailleMap(){
+        var mapContainer = document.querySelector('.map-container');
+        if(window.innerWidth <= 768){
+            map.setZoom(9);
+            map.dragging.enable();
+            map.scrollWheelZoom.enable();
+            mapContainer.style.height = '700px';
+            mapContainer.style.width = '100%';
+            mapContainer.style.margin = '0 auto';
+            popupStyle.maxWidth = '90%';
+            popupStyle.minWidth = '90%';
+        } else {
+            map.setZoom(10);
+            mapContainer.style.height = '900px';
+            mapContainer.style.width = '90%';
+            mapContainer.style.margin = '0 auto';
+            popupStyle.maxWidth = '400px';
+            popupStyle.minWidth = '350px';
+        }
+        map.invalidateSize();
+    }
+
+    ajusterTailleMap();
+    window.addEventListener('resize', ajusterTailleMap);
+
+    // Listes des communes desservies par le bus dentaire
+    var villes = [
+        { nom: "La Romieu", lat: 43.981, lon: 0.497, id: 1},
+        { nom: "Simorre", lat: 43.451, lon: 0.735, id: 2},
+        { nom: "Castelnau-d'Auzan", lat: 43.949, lon: 0.086, id: 3},
+        { nom: "Estang", lat: 43.8675, lon: -0.1075, id: 4},
+        { nom: "Le Houga", lat: 43.774, lon: -0.179, id: 5},
+        { nom: "Valence-sur-Baïse", lat: 43.882, lon: 0.380, id: 6},
+        { nom: "Pujaudran", lat: 43.591, lon: 1.15, id: 7},
+        { nom: "Castéra-Verduzan", lat: 43.806, lon: 0.428, id: 8},
+        { nom: "Montesquiou", lat: 43.578, lon: 0.329, id: 9},
+        { nom: "Miradoux", lat: 43.998, lon: 0.756, id: 10}
+    ];
+
+    var busIcon = L.icon({
+        iconUrl: '<?php echo get_template_directory_uri(); ?>/assets/images/bus_icon.png',
+        iconSize: [40, 40],
+        iconAnchor: [16, 32],
+        popupAnchor: [0, -32]
+    });
+
+    // Ajout des marqueurs pour chaque ville
+    villes.forEach(ville => {
+        var marker = L.marker([ville.lat, ville.lon], {icon: busIcon}).addTo(map);
+
+        var customPopup = L.popup({
+            className: 'custom-map-popup',
+            autoPan: false,
+            closeOnClick: false,
+            autoClose: false
+        });
+
+        marker.on('click', function (e) {
+            map.closePopup();
+
+            // Calcul de la position du marqueur en pixels
+            var markerScreenPos = map.latLngToContainerPoint(marker.getLatLng());
+            var mapSize = map.getSize();
+
+            // Détermination des ajustements d'offset
+            var offsetY = -50; // Offset par défaut (vers le haut)
+            var offsetX = 0; // Offset horizontal par défaut
+
+            // Ajustement vertical
+            if (markerScreenPos.y < (mapSize.y * 0.4)) {
+                offsetY = 170; // S'ouvre vers le bas si près du haut
+                //offsetY = 300; 
+            }
+
+            // Ajustement horizontal
+            if (markerScreenPos.x < (mapSize.x * 0.2)) {
+                offsetX = 50; // S'ouvre à droite si près du bord gauche
+            } else if (markerScreenPos.x > (mapSize.x * 0.8)) {
+                offsetX = -50; // S'ouvre à gauche si près du bord droit
+            }
+
+            customPopup.options.offset = L.point(offsetX, offsetY);
+
+            customPopup.setLatLng(marker.getLatLng()).openOn(map);
+
+            customPopup.setContent('<div class="popup-loading"><div class="loader"></div></div>');
+
+            fetch('<?php echo admin_url("admin-ajax.php");?>?action=get_ville_info&ville_nom=' + encodeURIComponent(ville.nom))
+                .then(response => response.text())
+                .then(data => {
+                    customPopup.setContent('<div class="popup-animation-container">' + data + '</div>');
+            
+            // Animation d'apparition progressive
+            setTimeout(() => {
+                const container = document.querySelector('.custom-map-popup .popup-animation-container');
+                if (container) {
+                    container.style.opacity = '1';
+                    const sections = container.querySelectorAll('.popup-section, .popup-image-container');
+                    sections.forEach((section, index) => {
+                        setTimeout(() => {
+                            section.style.opacity = '1';
+                            section.style.transform = 'translateY(0)';
+                        }, index * 200);
+                    });
+                }
+            }, 50);
+        });
+        });
+    });
+});
+</script>
+----
+Dans le fichier carte.php :
+* Création de la carte centrée sur le Gers, sans zoom par défaut.
+* Importation d'un fichier GeoJSON externe pour dessiner le contour du département du Gers.
+* Liste des villes avec leurs coordonnées GPS. Ces coordonnées sont statiques, mais pourraient à terme être dynamiques via la base WP.
+* Lors d'un clic sur une ville, une requête AJAX est envoyée à WordPress avec le nom de la ville pour récupérer ses informations dynamiquement.
+
+Intégration de la carte : 
+[source, php]
+----
+ <?php include('carte.php'); ?>
+----
+On utilise cet extrait de code pour inclure la carte intéractive dans la page d'accueil (index.php) et de prise de rendez-vous (page-prise-de-rendez-vous.php)
+
+== 3. Gestion des partenaires financiers et institutionnels
+
+==== Description
+Cette fonctionnalité peremt de visualiser les logos des différents partenaires financiers et institutionnels qui soutiennent le projet dans la page "Comment nous soutenir". Les logos sont affichés dynamiquement depuis des champs personnalisés créés via ACF (partenaire_financier_1, partenaire_institutionnel_1, etc.). Il n'y a pas de CPT, tout est géré depuis l'interface de la page "Comment nous soutenir" dans WordPress.
+
+==== Scénarios éventuels
+
+1. L'administrateur se connecte à l'interface administrateur de WordPress 
+
+2. Il selectionne "Pages" dans le menu
+
+3. Il clique sur la page intitulé "Comment nous soutenir" puis se rend dans la section "Partenaires financiers" ou "Partenaires institutionnels" et ajoute des images (logos) dans les champs existants (partenaire_financier_1, partenaire_financier_2, partenaire_financier_3, partenaire_institutionnel_1, partenaire_institutionnel_2, partenaire_institutionnel_3, ....)
+
+4. Il valide en cliquant sur "Enregistrer"
+
+==== Fichier Impliquées
+* functions.php - Déclaration fonction pour afficher dynamiquement les logos 
+* page-comment-nous-soutenir.php - Intégration de la fonction dans la section "partenaire-list"
+
+==== Extrait de Code Significatif
+
+Fonction d'affichage des logos ACF : 
+[source, php]
+----
+function afficher_logos_partenaires($max = 50) {
+    if(!is_page()) return;
+    $page_id = get_the_ID();
+
+    echo '<div class="partenaires-container">';
+
+    echo '<div class="partenaires-section institutionnels">';
+    echo '<h3>Nos partenaires institutionnels</h3>';
+    echo '<div class="logos">';
+    for($i = 1; $i <= $max; $i++) {
+        $image = get_field("partenaire_institutionnel_$i", $page_id);
+        if($image && isset($image['url'])){
+            echo '<div class="logo-item institutionnel">';
+            echo '<img src="' . esc_url($image['url']) . '" alt="' . esc_attr($image['alt']) .' ">';
+            echo '</div>';
+        }
+    }
+    echo '</div></div>';
+    
+    echo '<div class="partenaires-section financiers">';
+    echo '<h3>Nos partenaires financiers</h3>';
+    echo '<div class="logos">';
+    for($i = 1; $i <= $max; $i++) {
+        $image = get_field("partenaire_financier_$i", $page_id);
+        if($image && isset($image['url'])){
+            echo '<div class="logo-item financier">';
+            echo '<img src="' . esc_url($image['url']) . '" alt="' . esc_attr($image['alt']) .' ">';
+            echo '</div>';
+        }
+    }
+    echo '</div></div>';
+    echo '</div>';
+}
+----
+Vérifie qu'on est bien sur une page WordPress et récupère son ID.
+Création du conteneur HTML pour la section des partenaires institutionnels.
+Boucle de 1 à $max (ici 50) pour parcourir dynamiquement tous les champs créés dans ACF avec des noms du type partenaire_institutionnel_1, partenaire_institutionnel_2, etc.
+Cela permet une extension facile : il suffit d'ajouter un champ ACF en suivant la nomenclature et il sera automatiquement détecté.
+Les images sont sécurisées avec esc_url() et esc_attr().
+Même principe pour la section des partenaires financiers.
+
+Appel de la fonction dans le template :
+[source, php]
+----
+<div class="partenaire-list">
+    <div class="partenaire-content">
+        <div class="grid">
+            <div class="left">
+                <h2>Plaisir de<br>travailler avec</h2>
+            </div>
+            <div class="right">
+                <?php afficher_logos_partenaires();?>
+            </div>
+        </div>
+    </div>
+</div>
+----
+Ce bloc HTML intègre la fonction dans le layout. La classe grid permet d'avoir un affichage en colonnes :
+    à gauche : on a un titre
+    à droite : on retrouve l'ensemble des logos affichés via la fonction afficher_logos_partenaires()
+
+[source, JavaScript]
+----
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const animateLogos = () => {
+            const logoSection = document.querySelector('.partenaire-list');
+            const logoItems = document.querySelectorAll('.logo-item');
+
+            logoItems.forEach(item => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(20px)';
+                item.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const institutionnels = document.querySelectorAll('.logo-item.institutionnel');
+                        const financier = document.querySelectorAll('.logo-item.financier');
+
+                        institutionnels.forEach((item, index) => {
+                            setTimeout(() => {
+                                item.style.opacity = '1';
+                                item.style.transform = 'translateY(0)';
+                            }, index * 350);
+                        });
+
+                        financier.forEach((item, index) => {
+                            setTimeout(() => {
+                                item.style.opacity = '1';
+                                item.style.transform = 'translateY(0)';
+                            }, (index + institutionnels.length) * 350);
+                        });
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1});
+            observer.observe(logoSection);
+        };
+        animateLogos();
+    });  
+</script>   
+----
+
+== 4. Affichage du planning (PDF)
+
+==== Description
+Cette fonctionnalité permet de télécharger le planning trimestriel au format PDF dans la page "Prise de rendez-vous". Ce planning est géré depuis l'interface de la page "Prise de rendez-vous" via un champ personnalisé ACF de type fichier (planning)
+
+==== Scénarios éventuels
+
+1. L'administrateur se connecte à l'interface administrateur de WordPress 
+
+2. Il selectionne "Pages" dans le menu
+
+3. Il clique sur la page intitulé "Prise de rendez-vous" puis se rend dans la section "Planning" et ajoute dans le champs planning, le fichier au format PDF
+
+4. Il valide en cliquant sur "Enregistrer"
+
+==== Fichier Impliquées
+* page-prise-de-rendez-vous.php - Code PHP qui affiche le lien de téléchargement
+
+==== Extrait de Code Significatif
+
+[source, php]
+----
+<?php
+$planning_file = get_field('planning');
+if($planning_file): ?>
+<p style="text-align: center; margin: 1em 0;">
+  Vous pouvez également télécharger le planning en cliquant juste ici :
+  <a href="<?php echo esc_url($planning_file['url']); ?>" class="card_button_2" download>
+    Télécharger le planning
+  </a> 
+</p>
+<?php else: ?>
+  <p style="text-align: center;">
+    Planning non disponible.
+  </p>
+<?php endif; ?>
+----
+On utilise la fonction get_field('planning') fournie par ACF pour récupérer le contenu du champ personnalisé.
+Si un fichier a été défini (le champ planning n’est pas vide), alors on entre dans le bloc d’affichage.
+Ce champ est configuré comme "type fichier" dans l’interface d’ACF.
+Génère dynamiquement un bouton de téléchargement :
+esc_url() sécurise l’URL du fichier (meilleure pratique WordPress).
+L'attribut download force le téléchargement du fichier plutôt qu'une ouverture dans le navigateur.
+
+== 5. Affichage des articles de presse
+
+==== Description  
+
+Cette fonctionnalité permet d'afficher dynamiquement une grille de cartes d'articles de presse. Chaque carte contient une image d'illustration, un titre, et redirige vers l'article source. Ces informations sont saisies depuis l'interface d'administration WordPress dans un Custom Post Type dédié, avec des champs ACF personnalisés (titre, lien, image).
+
+==== Scénarios éventuels
+
+1. L'administrateur se connecte à l'interface administrateur de WordPress 
+
+2. Il selectionne "Articles Presse" dans le menu
+
+3. Il clique sur un article (ou en ajoute un nouveau) puis se rend dans la section "Articles Presse" et remplit les champs ACF (titre_article, lien_article, image_article)
+
+4. Il valide en cliquant sur "Enregistrer"
+
+==== Fichier Impliquées
+* functions.php - Déclaration du CPT 
+* index.php - Récupération et affichage des articles
+
+==== Extrait de Code Significatif
+
+Déclaration du CPT : 
+[source, php]
+----
+function creer_post_type_presse() {
+    register_post_type('article_presse', [
+        'label' => 'Articles Presse',
+        'public' => true, 
+        'menu_icon' => 'dashicons-welcome-widgets-menus',
+        'supports' => ['title', 'thumbnail'],
+        'has_archive' => false,
+        'show_in_rest' => true, 
+    ]);
+}
+
+add_action('init', 'creer_post_type_presse');
+----
+La fonction creer_post_type_presse() permet de créer un nouveau type de contenu dans WordPress, qui sera utilisé pour ....
+
+Affichage dynamique des articles : 
+[source, php]
+----
+<section class="press">
+        <div class="container">
+            <h2 class="section-title">La presse parle de nous !</h2>
+            <div class="press-grid">
+                <?php
+                $press_query = new WP_Query([
+                    'post_type' => 'article_presse',
+                    'posts_per_page' => -1
+                ]);
+                
+                if($press_query->have_posts()) :
+                    while($press_query->have_posts()) : $press_query->the_post();
+                    $lien = get_field('lien_article');
+                    $image = get_field('image_article');
+                    if (is_array($image)) {
+                        $image = $image['url'];
+                    }
+                    $titre = get_field('titre_article');
+                ?>
+                <a href="<?= esc_url($lien);?>" target="_blank" class="press-card" style="background-image: url('<?= esc_url($image);?>');">
+                    <div class="press-overlay">
+                        <h3><?= esc_html($titre); ?></h3>
+                        <span>Lire la suite</span>
+                    </div>
+                </a>
+              <?php endwhile; wp_reset_postdata(); endif; ?>
+            </div>
+        </div>
+    </section>
+----
+
+On initialise une requête personnalisée pour récupérer tous les articles de presse publiés (posts_per_page => -1 signifie “tous”).
+On boucle sur chaque article :
+
+    get_field() récupère les données des champs personnalisés ACF pour chaque article.
+
+    On extrait l’image, le lien vers l’article original, et le titre à afficher.
+Chaque article est affiché sous forme de carte cliquable :
+
+    L’image est utilisée comme fond de carte grâce au style="background-image: ...".
+
+    Le titre s’affiche en surimpression.
+
+    target="_blank" ouvre le lien dans un nouvel onglet pour ne pas quitter le site.
+
+== 6. Formulaire de prise de rendez-vous et de contact
+
+==== Description
+Cette fonctionnalité permet 
+
+==== Scénarios éventuels
+
+1. L'administrateur se connecte à l'interface administrateur de WordPress 
+
+2. Il selectionne "Articles Presse" dans le menu
+
+3. Il clique sur un article puis se rend dans la section "Articles Presse" et saisie les informations requises (titre_article, lien_article, image_article)
+
+4. Il valide en cliquant sur "Enregistrer"
+
+==== Fichier Impliquées
+* functions.php - 
+* page-prise-de-rendez-vous.php - 
+* page-contact.php - 
+
+==== Extrait de Code Significatif
+
+=== Formulaire de rendez-vous 
+[source, php]
+----
+function afficher_formulaire_rdv() {
+    ob_start();
+    ?>
+    <section id="rdv" class="contact" style="background-color: #f8f9fa; padding: 40px;">
+        <h2 class="section-title">Prendre un rendez-vous</h2>                                                                               
+        <div class="contact-container">
+            <div class="formulaire">
+                <form id="formulaire_rdv" method="post" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>">
+                    <div class="form-group dual-input">
+                        <div class="input-wrapper">
+                            <label for="nom">Nom</label>
+                            <input placeholder="Votre nom" name="nom" id="nom" type="text" required>
+                        </div>
+                        <div class="input-wrapper">
+                            <label for="prenom">Prénom</label>
+                            <input placeholder="Votre prénom" name="prenom" id="prenom" type="text" required>
+                        </div>
+                    </div>
+    
+                    <div class="form-group dual-input">
+                        <div class="input-wrapper">
+                            <label for="email">Email</label>
+                            <input placeholder="exemple@email.com" name="email" id="email" type="email" required>
+                        </div>
+                        <div class="input-wrapper">
+                            <label for="numero">Téléphone</label>
+                            <input placeholder="06 XX XX XX XX" name="numero" id="numero" type="tel" required>
+                        </div>
+                    </div>
+                    <div class="input-wrapper">
+                    <label for="">Choisir votre commune</label>
+                        <select name="commune" id="commune">
+                        <option value="">-- Sélectionnez --</option>
+                        <option value="La Romieu">La Romieu</option>
+                        <option value="Simorre">Simorre</option>
+                        <option value="Castelanu-d'Auzan">Castelnau-d'Auzan</option>
+                        <option value="Estang">Estang</option>
+                        <option value="Le Houga">Le Houga</option>
+                        <option value="Valence-sur-Baïse">Valence-sur-Baïse</option>
+                        <option value="Castéra-Verduzan">Castéra-Verduzan</option>
+                        <option value="Montesquiou">Montesquiou</option>
+                        <option value="Miradoux">Miradoux</option>
+                        </select>
+                        <?php
+                        $planning_file = get_field('planning');
+                        if($planning_file): ?>
+                            <a href="<?php echo esc_url($planning_file['url']); ?>" class="button-planning" download>voir le planning</a> 
+                        <?php endif; ?>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea placeholder="Votre message..." name="message" id="message" rows="5" required></textarea>
+                    </div>
+                    <input type="hidden" name="action" value="envoyer_formulaire_rdv">      
+                    <button type="submit" class="submit" name="formulaire_rdv">Envoyer</button>
+                </form>
+                <div id="form-message"></div>
+            </div>
+            <div class="formulaire-box">
+                <div class="contact-info">
+                    <h3><i class="fas fa-info-circle"></i> Informations de contact</h3>
+                    <div class="contact-item">
+                        <i class="fas fa-phone-alt"></i>
+                        <span>05 62 62 57 90</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>dt32@croix-rouge.fr</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>11 Rue Dr Samalens, 32000 Auch</span>
+                    </div>
+                    <div class="contact-hours">
+                        <h4>Horaires</h4>
+                        <p>Lundi matin - vendredi matin de 09h00-12h00</p>
+                        <p>Mardi Mercredi Jeudi de 09h00-12h00 à 13h00-17h00</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>
+    <?php
+     if(isset($_GET['message_envoye']) && $_GET['message_envoye'] === 'rdv') {
+        echo '<p style="color: green; font-weight: bold;">Votre message a bien été envoyé.</p>';
+    } 
+    return ob_get_clean();
+}
+
+add_shortcode('formulaire_rdv', 'afficher_formulaire_rdv');
+----
+
+[source, php]
+----
+<?php echo do_shortcode('[formulaire_rdv]'); ?>
+----
+
+=== Formulaire de contact
+[source, php]
+----
+function afficher_formulaire_contact() {
+    ob_start();
+    ?>
+
+    <form id="formulaire_contact" method="post" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>">
+        <div class="input-group">
+            <input placeholder="Nom" name="nom" id="nom" type="text" required>
+            <input placeholder="Prénom" name="prenom" id="prenom" type="text" required>
+        </div>
+        <input placeholder="E-mail" name="email" id="email" type="email" required>
+        <textarea name="message" id="message" rows="5" placeholder="Message" required></textarea>
+        <input type="hidden" name="action" value="envoyer_formulaire_contact">
+        <button type="submit" class="submit" name="formulaire_contact">Envoyer</button>
+    </form>
+    <div id="form-message"></div>
+
+    <?php
+    if(isset($_GET['message_envoye']) && $_GET['message_envoye'] === 'contact') {
+        echo '<p style="color: green; font-weight: bold;">Votre message a bien été envoyé.</p>';
+    } 
+    return ob_get_clean();
+}
+
+add_shortcode('formulaire_contact', 'afficher_formulaire_contact');
+----
+
+[source, php]
+----
+<?php echo do_shortcode('[formulaire_contact]'); ?>
+----
+
+=== Traitement formulaire 
+[source, php]
+----
+add_action('admin_post_nopriv_envoyer_formulaire_rdv', 'traitement_formulaire_rdv');
+add_action('admin_post_envoyer_formulaire_rdv', 'traitement_formulaire_rdv');
+
+function traitement_formulaire_rdv() {
+    $nom = sanitize_text_field($_POST['nom']);
+    $prenom = sanitize_text_field($_POST['prenom']);
+    $email = sanitize_email($_POST['email']);
+    $numero = sanitize_text_field($_POST['numero']);
+    $commune = sanitize_text_field($_POST['commune']);
+    $message = sanitize_textarea_field($_POST['message']);
+
+    $to = get_option('admin_email');
+    $subject = 'Urgent : Prise de rendez-vous sur site Internet';
+    $body = "
+            <h2>Demande de rendez-vous :</h2>
+            <p><strong>Nom :</strong>$nom</p>
+            <p><strong>Prénom :</strong>$prenom</p>
+            <p><strong>Email :</strong>$email</p>
+            <p><strong>Téléphone :</strong>$numero</p>
+            <p><strong>Commune :</strong>$commune</p>
+            <p><strong>Message :</strong><br>$message</p>
+        ";
+
+    wp_mail($to, $subject, $body);
+
+    wp_redirect(add_query_arg('message_envoye', 'rdv', wp_get_referer()));
+    exit;
+}
+
+add_action('admin_post_nopriv_envoyer_formulaire_contact', 'traitement_formulaire_contact');
+add_action('admin_post_envoyer_formulaire_contact', 'traitement_formulaire_contact');
+
+function traitement_formulaire_contact() {
+    $nom = sanitize_text_field($_POST['nom']);
+    $prenom = sanitize_text_field($_POST['prenom']);
+    $email = sanitize_email($_POST['email']);
+    $message = sanitize_textarea_field($_POST['message']);
+
+    $to = get_option('admin_email');
+    $subject = 'Contact via Site Internet';
+    $body = "
+            <h2>Contact :</h2>
+            <p><strong>Nom :</strong>$nom</p>
+            <p><strong>Prénom :</strong>$prenom</p>
+            <p><strong>Email :</strong>$email</p>
+            <p><strong>Message :</strong><br>$message</p>
+        ";
+
+    wp_mail($to, $subject, $body);
+
+    wp_redirect(add_query_arg('message_envoye', 'contact', wp_get_referer()));
+    exit;
+}
+----
+
+== 7. Politique de confidentialité et mentions légales
+
+==== Description
+
+
+==== Scénarios éventuels
+
+1. L'administrateur se connecte à l'interface administrateur de WordPress 
+
+2. Il selectionne "Pages" dans le menu
+
+3. Il clique sur la page intitulé "Prise de rendez-vous" puis se rend dans la section "Planning" et ajoute le planning au format PDF 
+
+4. Il valide en cliquant sur "Enregistrer"
+
+==== Fichier Impliquées
+* page-politique-de-confidentalite.php
+* page-mentions-legales.php
+
+==== Extrait de Code Significatif
+
+[source, php]
+----
+<?php get_header(); ?>
+<?php require_once('menu.php'); ?>
+
+<main>
+    <?php
+     while ( have_posts() ) : the_post();
+        echo '<div class="page-content">';
+        the_title('<h1>', '</h1>');
+        the_content();
+        echo '</div>';
+    endwhile;
+    ?>
+</main>
+
+<?php get_footer(); ?>
+----
