@@ -10,6 +10,8 @@
 
 | Date | Mai 2025
 
+| Version actuelle de WordPress | WordPress 6.8.1
+
 |===
 |===
 | Équipe |
@@ -133,7 +135,7 @@ Cette fonctionnalité permet de gérer les différentes lieux de passage du Bus 
 
 ==== Extrait de Code Significatif
 
-Déclaration du CPT : 
+Déclaration du CPT (functions.php) : 
 [source, php]
 ----
 function creer_post_type_lieux() {
@@ -147,9 +149,9 @@ function creer_post_type_lieux() {
 }
 add_action('init', 'creer_post_type_lieux');
 ----
-La fonction creer_post_type_lieux() permet de créer un nouveau type de contenu dans WordPress, nommé Lieux Bus Dentaire, qui sera utilisé pour afficher les différentes villes desservies.
+La fonction creer_post_type_lieux() permet de créer un type de contenu personnalisé dans WordPress appelé Lieux Bus Dentaire. Il est utilisé pour enregistrer les lieux desservis et les rendre accessibles via l’administration. 
 
-Aaffichage frontend dans page-prise-de-rendez-vous.php : 
+Affichage frontend (page-prise-de-rendez-vous.php) : 
 [source, php]
 ----
 <section class="lieux">
@@ -195,12 +197,13 @@ Aaffichage frontend dans page-prise-de-rendez-vous.php :
     <button id="nextSlide" class="slider-nav slider-nav--next" aria-label="Suivant">&#10095;</button>
 </section>
 ----
-On commence par récupérer tous les lieux enregistrés, sans limite de nombre (posts_per_page => -1),
-La fonction get_field() récupèrent les données saisies dans l’interface ACF pour chaque lieu.
-On utilise esc_html() et esc_url() pour sécuriser les données affichées et éviter les failles XSS.
-Les boutons "précédent" et "suivant" sont utilisé pour animer un slider des lieux à l'aide de JavaScript : 
+Cet extrait de code permet d’afficher dynamiquement les lieux de passage du Bus Dentaire sous forme de cartes dans un slider horizontal : 
+Une requête WP_Query récupère tous les contenus du Custom Post Type bus_lieu, sans limite de nombre (posts_per_page => -1).
+Pour chaque lieu, on récupère les champs personnalisés ACF à l'aide de la fonction get_field() : l’image (photos_villes), la date (date_passage) et l’adresse (adresse_passage).
+Chaque carte est générée avec ces informations, en sécurisant les données avec esc_url() et esc_html() pour sécuriser les données affichées et éviter les failles XSS.
+Les boutons #prevSlide et #nextSlide servent à la navigation dans le slider des cartes grâce au script JavaScript suivant qui gère le défilement automatique ou manuel.
 
-Script du Slider : 
+Script du Slider (page-comment-nous-soutenir.php) : 
 [source, JavaScript] 
 ----
 document.addEventListener('DOMContentLoaded', function() {
@@ -275,11 +278,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 ----
-Ce script :
-* Crée un slider horizontal pour faire défiler les cartes
-* Active un défilement automatique toutes les 4 secondes
-* Interrompt le défilement au survol
-* Permet un contrôle manuel via les boutons "précédent / suivant"
+Ce script JavaScript permet de gérer un slider de cartes affichant les lieux de passage du Bus Dentaire, avec un défilement automatique ou un contrôle manuel via des boutons : 
+Le slider défile automatiquement toutes les 4 secondes (startAutoSlide()).
+Le sens de défilement s’inverse automatiquement lorsqu’on atteint le début ou la fin du slider (autoSlide()).
+Les boutons précédent / suivant permettent de faire défiler manuellement les cartes (scrollSlider()).
+Le défilement automatique est temporairement suspendu lorsque l'utilisateur survole le slider (mouseenter) et reprend lorsqu'il en sort (mouseleave).
 
 == 2. Carte interactive des villes desservies
 
@@ -297,14 +300,14 @@ Cette fonctionalité permet de visualiser toutes les communes desservies par le 
 4. Il valide en cliquant sur "Enregistrer"
 
 ==== Fichier Impliquées
-* carte.php - intégration Leaflet.js & carte
-* functions.php - déclaration du CPT & fonction AJAX
-* index.php - inclusion de carte.php
-* page-prise-de-rendez-vous.php - inclusion de carte.php
+* carte.php - Intégration Leaflet.js & carte
+* functions.php - Déclaration du CPT & fonction AJAX
+* index.php - Inclusion de carte.php
+* page-prise-de-rendez-vous.php - Inclusion de carte.php
 
 ==== Extrait de Code Significatif
 
-Déclaration du CPT : 
+Déclaration du CPT (functions.php) : 
 [source, php]
 ----
 function creer_post_type_villes() {
@@ -323,9 +326,9 @@ function creer_post_type_villes() {
 }
 add_action('init', 'creer_post_type_villes');
 ----
-La fonction creer_post_type_villes() permet de créer un nouveau type de contenu dans WordPress, qui sera utilisé pour stocker les informations liées aux communes où le bus intervient.
+La fonction creer_post_type_villes() permet de créer un type de contenu personnalisé dans WordPress appelé Villes Desservies. Il est utilisé pour enregistrer les villes desservis et les rendre accessibles via l’administration. 
 
-Fonction AJAX pour afficher les informations dans la popup : 
+Récupération des informations d' ACF (functions.php) : 
 [source, php]
 ----
 function get_ville_info() {
@@ -379,11 +382,9 @@ function get_ville_info() {
 add_action('wp_ajax_get_ville_info', 'get_ville_info');
 add_action('wp_ajax_nopriv_get_ville_info', 'get_ville_info');
 ----
-La fonction get_ville_info() permet de récupérer le nom de la ville via l'URL AJAX (GET), puis effectuer une requête WP_Query pour retrouver le post correspondant.
-On utilise toujours la fonction get_field pour extraire les champs personnalisés ACF afin d'afficher l'image associée à la ville, le titre de la commune et le planning dans la popup.
-On utilise esc_html() pour sécuriser les données affichées et éviter les failles XSS et on utilise nl2br() pour respecter les sauts de ligne du texte saisi dans l'admin.
+La fonction get_ville_info() est appelée via AJAX lorsqu'un marqueur est cliqué. Cette fonction récupère le nom de la commune à partir de la requête, recherche le CPT correspondant, et récupère les informations stockées dans les champs personnalisés (ACF) à l'aide de la fonction get_field(). Les informations récupérées sont formatées en HTML et affichées dans le popup. Les fonctions esc_html() et nl2br() assurent la sécurité et la mise en forme du texte.
 
-Carte interactive avec Leaflet.js : 
+Carte interactive avec Leaflet.js (carte.php) : 
 [source, JavaScript]
 ----
 <script>
@@ -542,18 +543,33 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 </script>
 ----
-Dans le fichier carte.php :
-* Création de la carte centrée sur le Gers, sans zoom par défaut.
-* Importation d'un fichier GeoJSON externe pour dessiner le contour du département du Gers.
-* Liste des villes avec leurs coordonnées GPS. Ces coordonnées sont statiques, mais pourraient à terme être dynamiques via la base WP.
-* Lors d'un clic sur une ville, une requête AJAX est envoyée à WordPress avec le nom de la ville pour récupérer ses informations dynamiquement.
+Ce script JavaScript permet d’afficher la carte Leaflet centrée sur le département du Gers, voici ce qu'il fait exactement :
+
+La carte est initialisée par la fonction L.map() qui crée une nouvelle carte en définissant la position initiale de la carte avec la méthode setView(). Esuite un fond de carte clair est chargé grâce à CartoDB Light, à partir d’un serveur de tuiles Carto , via la fonction L.tileLayer().
+Les contours du département du Gers sont affichées à partir d'un fichier GeoJSON. Ce fichier, contient les données géographiques du département, et récupérée via une requête fetch depuis le dépôt GitHub : https://raw.githubusercontent.com/gregoiredavid/france-geojson/master/departements/32-gers/departement-32-gers.geojson 
+Une fois les données GeoJSON récupérées, elles sont affichées à l’aide de L.geoJSON() avec un style personnalisé (trait rouge, pas de fond).
+Un masque est ajouté pour délimiter plus précisément la zone géographique, en créant un polygone externe et en calculant la différence avec les contours du Gers à l'aide de la librairie Turf.js. 
+turf.polygon → crée un polygone externe
+turf.difference → calcule la différence entre le polygone externe et les contours du Gers
+Les villes desservies sont définies dans un tableau contenant leur nom, latitude et longitude.
+Pour chaque ville, un marqueur personnalisé avec l'icône du bus dentaire est ajouté avec L.marker() et positionné selon ses coordonnées GPS.
+
+Lorsque l’utilisateur clique sur un marqueur, un événement click (la fonction marker.on(‘click’, …)) déclenche :
+* la fermeture des autres popups
+* la création d’un popup personnalisé
+* une requête AJAX avec fetch() vers admin-ajax.php de WordPress, avec le nom de la ville passée en paramètre
+Cette requête est traitée côté PHP par la fonction get_ville_info(), qui retourne un HTML personnalisé contenant les informations de la commune pour les afficher dans le popup.
+
+Enfin la position des popup est ajustée dynamiquement en fonction de leur distance par rapport aux bords de la carte. On ajuste la position du popup car lorsque désactive le déplacement automatique (autoPan: false) de la carte quand un popup s’ouvre près du bord, il peut être tronqué et il ne peut pas être entièrement visible. On ajuste donc la position du popup : 
+* Si le marqueur est proche du haut → il s’ouvre vers le bas
+* Si il est proche des côtés → petit décalage horizontal.
 
 Intégration de la carte : 
 [source, php]
 ----
  <?php include('carte.php'); ?>
 ----
-On utilise cet extrait de code pour inclure la carte intéractive dans la page d'accueil (index.php) et de prise de rendez-vous (page-prise-de-rendez-vous.php)
+Cet extrait de code permet d'inclure la carte intéractive dans la page d'accueil (index.php) et de prise de rendez-vous (page-prise-de-rendez-vous.php)
 
 == 3. Gestion des partenaires financiers et institutionnels
 
@@ -576,7 +592,7 @@ Cette fonctionnalité peremt de visualiser les logos des différents partenaires
 
 ==== Extrait de Code Significatif
 
-Fonction d'affichage des logos ACF : 
+Fonction d'affichage des logos ACF (functions.php) : 
 [source, php]
 ----
 function afficher_logos_partenaires($max = 50) {
@@ -613,14 +629,15 @@ function afficher_logos_partenaires($max = 50) {
     echo '</div>';
 }
 ----
-Vérifie qu'on est bien sur une page WordPress et récupère son ID.
-Création du conteneur HTML pour la section des partenaires institutionnels.
-Boucle de 1 à $max (ici 50) pour parcourir dynamiquement tous les champs créés dans ACF avec des noms du type partenaire_institutionnel_1, partenaire_institutionnel_2, etc.
-Cela permet une extension facile : il suffit d'ajouter un champ ACF en suivant la nomenclature et il sera automatiquement détecté.
-Les images sont sécurisées avec esc_url() et esc_attr().
-Même principe pour la section des partenaires financiers.
+La fonction afficher_logos_partenaires() permet de :
+Vérifier que l’on se trouve bien sur une page WordPress (is_page()) et récupère son ID
+Récupérer dynamiquement les champs ACF numérotés (partenaire_institutionnel_X et partenaire_financier_X) grâce à une boucle de 1 à $max (ici 50). 
+Générer automatiquement le HTML des logos en les classant par type
+Utiliser esc_url() et esc_attr() pour éviter les failles XSS
 
-Appel de la fonction dans le template :
+Pour ajouter un nouveau logo, il suffit d’ajouter un nouveau champ dans l’interface admin pour qu’il soit automatiquement pris en compte.
+
+Appel de la fonction dans le template (page-comment-nous-soutenir.php) :
 [source, php]
 ----
 <div class="partenaire-list">
@@ -636,10 +653,12 @@ Appel de la fonction dans le template :
     </div>
 </div>
 ----
-Ce bloc HTML intègre la fonction dans le layout. La classe grid permet d'avoir un affichage en colonnes :
-    à gauche : on a un titre
-    à droite : on retrouve l'ensemble des logos affichés via la fonction afficher_logos_partenaires()
+Ce code HTML permet d'intégrer visuellement les logos : 
+    La colonne de gauche affiche un titre
+    La colonne de droite affiche les logos générés par la fonction afficher_logos_partenaires()
+    La classe CSS grid permet une mise en page responsive (deux colonnes)
 
+Animation des logos avec affichage progressif (page-comment-nous-soutenir.php) : 
 [source, JavaScript]
 ----
 <script>
@@ -683,6 +702,10 @@ Ce bloc HTML intègre la fonction dans le layout. La classe grid permet d'avoir 
     });  
 </script>   
 ----
+Ce script JavaScript permet :
+D’appliquer une animation d’apparition progressive à chaque logo (fade-in + translate)
+D’utiliser l’Intersection Observer API pour déclencher l’animation uniquement lorsque les logos sont visibles à l’écran
+De différencier les partenaires institutionnels et financiers pour créer un effet d’apparition en cascade (delay + animation)
 
 == 4. Affichage du planning (PDF)
 
@@ -704,6 +727,7 @@ Cette fonctionnalité permet de télécharger le planning trimestriel au format 
 
 ==== Extrait de Code Significatif
 
+Bouton de téléchargement (page-prise-de-rendez-vous.php) : 
 [source, php]
 ----
 <?php
@@ -721,12 +745,11 @@ if($planning_file): ?>
   </p>
 <?php endif; ?>
 ----
-On utilise la fonction get_field('planning') fournie par ACF pour récupérer le contenu du champ personnalisé.
-Si un fichier a été défini (le champ planning n’est pas vide), alors on entre dans le bloc d’affichage.
-Ce champ est configuré comme "type fichier" dans l’interface d’ACF.
-Génère dynamiquement un bouton de téléchargement :
-esc_url() sécurise l’URL du fichier (meilleure pratique WordPress).
-L'attribut download force le téléchargement du fichier plutôt qu'une ouverture dans le navigateur.
+Cet extrait de code PHP permet :
+De récupérer le fichier PDF : La fonction get_field('planning') récupère le fichier téléversé dans le champ personnalisé nommé planning.
+De vérifier si un fichier a bien été ajouté (if($planning_file))
+De générer le lien de téléchargement vers l'URL du fichier (<a>)
+De protéger l’URL affichée contre les injections malveillantes (esc_url())
 
 == 5. Affichage des articles de presse
 
@@ -750,7 +773,7 @@ Cette fonctionnalité permet d'afficher dynamiquement une grille de cartes d'art
 
 ==== Extrait de Code Significatif
 
-Déclaration du CPT : 
+Déclaration du CPT (functions.php) : 
 [source, php]
 ----
 function creer_post_type_presse() {
@@ -766,9 +789,9 @@ function creer_post_type_presse() {
 
 add_action('init', 'creer_post_type_presse');
 ----
-La fonction creer_post_type_presse() permet de créer un nouveau type de contenu dans WordPress, qui sera utilisé pour ....
+La fonction creer_post_type_lieux() permet de créer un type de contenu personnalisé dans WordPress appelé Articles Presse. Il est utilisé pour enregistrer les articles de presse et les rendre accessibles via l’administration. 
 
-Affichage dynamique des articles : 
+Affichage dynamique des articles (index.php) : 
 [source, php]
 ----
 <section class="press">
@@ -801,44 +824,46 @@ Affichage dynamique des articles :
         </div>
     </section>
 ----
-
-On initialise une requête personnalisée pour récupérer tous les articles de presse publiés (posts_per_page => -1 signifie “tous”).
-On boucle sur chaque article :
-
-    get_field() récupère les données des champs personnalisés ACF pour chaque article.
-
-    On extrait l’image, le lien vers l’article original, et le titre à afficher.
-Chaque article est affiché sous forme de carte cliquable :
-
-    L’image est utilisée comme fond de carte grâce au style="background-image: ...".
-
-    Le titre s’affiche en surimpression.
-
-    target="_blank" ouvre le lien dans un nouvel onglet pour ne pas quitter le site.
+Cet extrait de code PHP permet d’afficher une grille d’articles de presse  :
+La fonction WP_Query() interroge tous les articles du type article_presse, sans limite (posts_per_page => -1).
+La boucle while ($press_query->have_posts()) parcourt tous les résultats.
+Pour chaque article, on utilise get_field() pour récupérer :
+l’image (image_article), le lien vers l’article (lien_article) et le titre de l’article (titre_article)
+Les balises esc_url() et esc_html() assurent la sécurité des données affichées (contre faille XSS).
 
 == 6. Formulaire de prise de rendez-vous et de contact
 
 ==== Description
-Cette fonctionnalité permet 
+Cette fonctionnalité permet aux utilisateurs du site :
+
+    de prendre rendez-vous via un formulaire situé dans la page Prise de rendez-vous,
+
+    ou de contacter l’équipe via un formulaire disponible sur la page Contact.
+
+Ces deux formulaires sont gérés en PHP via WordPress, en utilisant :
+
+    un shortcode [formulaire_rdv] et [formulaire_contact] pour l’affichage,
+
+    une fonction de traitement dédiée (admin_post) pour l’envoi,
+
+Les e-mails reçus sont enregistrées dans le plugin WP Mail Logging de WordPress pour suivi et archivage.
 
 ==== Scénarios éventuels
 
 1. L'administrateur se connecte à l'interface administrateur de WordPress 
 
-2. Il selectionne "Articles Presse" dans le menu
+2. Il selectionne "WP Mail Logging" dans le menu
 
-3. Il clique sur un article puis se rend dans la section "Articles Presse" et saisie les informations requises (titre_article, lien_article, image_article)
-
-4. Il valide en cliquant sur "Enregistrer"
+3. Il peut visualiser tous les mails reçus depuis le site (demandes de rendez-vous et contacts)
 
 ==== Fichier Impliquées
-* functions.php - 
-* page-prise-de-rendez-vous.php - 
-* page-contact.php - 
+* functions.php - Déclaration des fonctions de traitement des formulaires 
+* page-prise-de-rendez-vous.php - Affichage du formulaire RDV via shortcode
+* page-contact.php - Affichage du formulaire de contact via shortcode
 
 ==== Extrait de Code Significatif
 
-=== Formulaire de rendez-vous 
+Affichage du formulaire de prise de rendez-vous (functions.php) : 
 [source, php]
 ----
 function afficher_formulaire_rdv() {
@@ -933,13 +958,30 @@ function afficher_formulaire_rdv() {
 
 add_shortcode('formulaire_rdv', 'afficher_formulaire_rdv');
 ----
+La fonction afficher_formulaire_rdv() permet :
+    de générer dynamiquement le formulaire HTML pour la prise de rendez-vous,
+    d'utiliser ob_start() pour capturer le contenu HTML et l’afficher via un shortcode WordPress ([formulaire_rdv]),
+    d’inclure un champ <input type="hidden" name="action" value="envoyer_formulaire_rdv"> pour lier le formulaire à son traitement PHP via l’action admin_post.
 
+La fonction afficher_formulaire_rdv permet de créer un formulaire de rendez-vous. Il permet aux utilisateurs de demander un rendez-vous en fournissant leurs informations personnelles et en sélectionnant leur commune parmi la liste des communes desservies par le bus dentaire. Voici son fonctionnement :
+
+La fonction afficher_formulaire_rdv() génère le HTML du formulaire en utilisant output buffering (ob_start()) pour capturer le contenu HTML et l’afficher via un shortcode WordPress ([formulaire_rdv])
+
+Le formulaire envoie les données via POST vers admin-post.php de WordPress avec un champ caché "action" défini à "envoyer_formulaire_rdv"
+
+    Les champs incluent :
+
+        Nom et prénom, Email et téléphone, Liste déroulante des communes desservies, Zone de texte pour le message et un bouton permet de télécharger le planning au format pdf 
+
+Après soumission, un message de confirmation s'affiche si le paramètre GET 'message_envoye' vaut 'rdv'
+
+Insertion du formulaire de rendez-vous (page-prendre-un-rendez-vous.php) : 
 [source, php]
 ----
 <?php echo do_shortcode('[formulaire_rdv]'); ?>
 ----
 
-=== Formulaire de contact
+Affichage du formulaire de contact (functions.php) :
 [source, php]
 ----
 function afficher_formulaire_contact() {
@@ -967,13 +1009,23 @@ function afficher_formulaire_contact() {
 
 add_shortcode('formulaire_contact', 'afficher_formulaire_contact');
 ----
+La fonction afficher_formulaire_contact() permet de créer un formulaire de contact. Il fonctionne de la même manière que le formulaire de rendez-vous :
 
+Il capture du HTML via ob_start() puis génère un formulaire avec les champs :
+
+        Nom et prénom, email et zone de texte pour le message
+
+Le formulaire envoie les données vers admin-post.php avec l'action "envoyer_formulaire_contact"
+
+Après soumission, un message de confirmation s'affiche si le paramètre GET 'message_envoye' vaut 'contact'
+
+Insertion du formulaire de contact (page-contact.php) : 
 [source, php]
 ----
 <?php echo do_shortcode('[formulaire_contact]'); ?>
 ----
 
-=== Traitement formulaire 
+Traitement formulaire (functions.php) : 
 [source, php]
 ----
 add_action('admin_post_nopriv_envoyer_formulaire_rdv', 'traitement_formulaire_rdv');
@@ -1030,6 +1082,39 @@ function traitement_formulaire_contact() {
     exit;
 }
 ----
+Le traitement des deux formulaires suit le même fonctionnement :
+
+    Pour le formulaire de rendez-vous :
+
+        Les hooks admin_post_nopriv_ et admin_post_ capturent les soumissions 
+
+        Les données sont nettoyées avec les fonctions sanitize_* de WordPress pour sécuriser les données reçues
+
+        Un email HTML est généré avec toutes les informations du rendez-vous
+
+        L'email est envoyé à l'adresse admin via wp_mail()
+
+        L'utilisateur est redirigé vers la page d'origine avec un paramètre GET de confirmation
+
+    Pour le formulaire de contact :
+
+        Même fonctionnement que pour le rendez-vous mais avec moins de champs
+
+        L'email généré contient seulement les informations du formulaire
+
+        Redirection vers la page d'originee avec paramètre GET de confirmation
+
+Tous les emails envoyés sont automatiquement enregistrés dans le plugin WP Mail Logging de WordPress, permettant à l'administrateur de :
+
+    Voir l'historique complet des demandes
+
+    Vérifier le contenu des messages
+
+    Contrôler que les emails sont bien partis
+
+    Identifier d'éventuels problèmes d'envoi
+
+Les données sensibles (emails, numéros de téléphone) sont nettoyées avant traitement pour prévenir les failles XSS. Les redirections utilisent wp_get_referer() pour garantir que l'utilisateur revient bien à la page d'origine du formulaire.
 
 == 7. Politique de confidentialité et mentions légales
 
