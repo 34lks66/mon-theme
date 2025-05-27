@@ -836,15 +836,13 @@ Les balises esc_url() et esc_html() assurent la sécurité des données affiché
 ==== Description
 Cette fonctionnalité permet aux utilisateurs du site :
 
-    de prendre rendez-vous via un formulaire situé dans la page Prise de rendez-vous,
-
-    ou de contacter l’équipe via un formulaire disponible sur la page Contact.
+* de prendre rendez-vous via un formulaire situé dans la page Prise de rendez-vous,
+* ou de contacter l’équipe via un formulaire disponible sur la page Contact.
 
 Ces deux formulaires sont gérés en PHP via WordPress, en utilisant :
 
-    un shortcode [formulaire_rdv] et [formulaire_contact] pour l’affichage,
-
-    une fonction de traitement dédiée (admin_post) pour l’envoi,
+* un shortcode [formulaire_rdv] et [formulaire_contact] pour l’affichage,
+* une fonction de traitement dédiée (admin_post) pour l’envoi,
 
 Les e-mails reçus sont enregistrées dans le plugin WP Mail Logging de WordPress pour suivi et archivage.
 
