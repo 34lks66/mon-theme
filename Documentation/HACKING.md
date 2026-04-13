@@ -51,14 +51,25 @@ Allez à l'adresse : http://localhost/phpmyadmin/
 
 Maintenant que WordPress est installé, il faut y ajouter le thème développé du bus dentaire gersois. 
 
-- Copiez le dossier contenant le thème personnalisé.
+#### Choix 1
+Le thème personnalisé du bus dentaire gersois correspond à ce dépôt Git. Pour l'installer dans votre environnement local, il faut le cloner directement dans le dossier des thèmes de WordPress.
+
+- Ouvrez votre terminal 
 - Naviguez dans les dossiers de XAMPP jusqu'au répertoire des thèmes de l'installation WordPress :
-    - Chemin : xampp/htdocs/wordpress/wp-content/themes/
-- Collez le dossier du thème à l'intérieur du dossier themes.
+```sh
+cd C:\xampp\htdocs\wordpress\wp-content\themes\
+```
+- Clonez ce dépôt Git directement dans ce dossier :
+```sh
+git clone https://github.com/34lks66/theme-wp-bus-dentaire-gersois.git
+```
+
+#### Choix 2
+Si vous n'utilisez pas Git en ligne de commande, vous pouvez télécharger le projet au format .zip depuis GitHub, et extraire son contenu dans xampp/htdocs/wordpress/wp-content/themes/
 
 ## Accéder au site et à l'administration
 
-Pour activer le thème, il faut se connecter à l'interface d'administration de WordPress, aller dans Apparence > Thèmes, trouver le thème et cliquer sur **Activer**.
+Une fois le dépôt récupéré, le thème est présent sur votre serveur local, mais il faut dire à WordPress de l'utiliser. Pour activer le thème, il faut se connecter à l'interface d'administration de WordPress, aller dans **Apparence > Thèmes**, trouver le thème et cliquer sur **Activer**.
 
 Pour se connecter : utiliser l'identifiant et le mot de passe administateur créés lors de la configuartion de WordPress.
 
